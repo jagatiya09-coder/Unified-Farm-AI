@@ -1,1 +1,26 @@
-
+{
+  "cropOptions": [
+    "Tomatoes",
+    "Cucumbers",
+    "Bell Peppers",
+    "Leafy Greens"
+  ],
+  "advantages": [
+    "Controlled environment reduces risk from weather disasters.",
+    "Higher yield per square meter compared to open fields.",
+    "Year-round production ensures steady income.",
+    "Premium pricing in urban markets."
+  ],
+  "setupRequirements": [
+    "Polyhouse or greenhouse structure with ventilation.",
+    "Drip irrigation system.",
+    "Temperature and humidity monitoring sensors."
+  ],
+  "estimatedProfitMargin": "25-40% higher than open-field crops",
+  "riskMitigation": [
+    "Diversifies income sources.",
+    "Acts as a backup in case of seasonal crop failure.",
+    "Can integrate with carbon credit programs for sustainability."
+  ],
+  "timestamp": "2026-02-26T20:15:00Z"
+}
