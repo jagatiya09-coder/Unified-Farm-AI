@@ -1,1 +1,21 @@
-
+{
+  "farmerName": "Demo Farmer",
+  "farmSize": "10 acres",
+  "financialHealth": "Moderate",
+  "strengths": [
+    "Access to irrigation canals",
+    "Use of certified seeds",
+    "Stable local market demand"
+  ],
+  "risks": [
+    "Dependence on rainfall variability",
+    "Limited access to crop insurance",
+    "Potential fertilizer cost increase"
+  ],
+  "recommendations": [
+    "Diversify crops with pulses to reduce risk.",
+    "Enroll in government crop insurance schemes.",
+    "Explore collective selling through farmer cooperatives."
+  ],
+  "timestamp": "2026-02-26T20:10:00Z"
+}
