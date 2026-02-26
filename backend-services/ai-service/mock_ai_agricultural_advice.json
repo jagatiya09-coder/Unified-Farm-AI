@@ -1,1 +1,19 @@
-
+{
+  "recommendations": [
+    "Use certified wheat seeds suitable for loamy soil in Uttar Pradesh.",
+    "Begin land preparation immediately and ensure 2–3 rounds of tilling.",
+    "Maintain soil moisture at 18–22% during germination."
+  ],
+  "riskAnalysis": [
+    "Rainfall forecast shows moderate variability; irrigation planning is essential.",
+    "Soil nutrient levels may require nitrogen supplementation.",
+    "Market prices for wheat are stable but may drop during peak harvest season."
+  ],
+  "fertilizerPlan": {
+    "type": "NPK 40:20:20",
+    "quantity": "120 kg per acre",
+    "schedule": "Apply 50% during sowing, 25% at 21 days, 25% at 45 days"
+  },
+  "successProbability": 0.78,
+  "timestamp": "2026-02-26T16:20:00Z"
+}
