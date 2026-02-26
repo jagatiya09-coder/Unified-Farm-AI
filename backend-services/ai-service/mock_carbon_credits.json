@@ -1,1 +1,12 @@
-
+{
+  "farmSize": "10 acres",
+  "crop": "Wheat",
+  "carbonSequestrationEstimate": "2.5 tons CO2 per acre",
+  "eligibleCredits": 25,
+  "creditValueUSD": 375,
+  "programs": [
+    "Verra Verified Carbon Standard",
+    "Gold Standard Agriculture Program"
+  ],
+  "timestamp": "2026-02-26T20:05:00Z"
+}
