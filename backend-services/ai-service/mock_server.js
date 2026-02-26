@@ -12,6 +12,25 @@ const mockResponse = require("./mock_ai_agricultural_advice.json");
 
 // Define the API endpoint
 app.post("/api/v1/ai/agricultural-advice", (req, res) => {
+  res.json(agriAdvice);
+});
+
+app.get("/api/v1/ai/market-insights", (req, res) => {
+  res.json(marketInsights);
+});
+
+app.get("/api/v1/ai/carbon-credits", (req, res) => {
+  res.json(carbonCredits);
+});
+
+app.get("/api/v1/ai/business-assessment", (req, res) => {
+  res.json(businessAssessment);
+});
+
+app.get("/api/v1/ai/greenhouse-advice", (req, res) => {
+  res.json(greenhouseAdvice);
+});
+app.post("/api/v1/ai/agricultural-advice", (req, res) => {
   console.log("Received request:", req.body);
   res.json(mockResponse);
 });
