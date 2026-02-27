@@ -1,4 +1,5 @@
 {
+  "farmerId": "FARM001",
   "farmSize": "10 acres",
   "crop": "Wheat",
   "carbonSequestrationEstimate": "2.5 tons CO2 per acre",
@@ -8,5 +9,20 @@
     "Verra Verified Carbon Standard",
     "Gold Standard Agriculture Program"
   ],
+  "sustainabilityScore": 0.82,
+  "blockchainHash": "0x9f8a7c6d5b123abc456def7890fedcba",
+  "certificationAuthority": "Indian Council of Agricultural Research (ICAR)",
+  "schemesEligible": [
+    "National Mission on Sustainable Agriculture",
+    "PM-Kisan Income Support",
+    "Organic Farming Subsidy"
+  ],
+  "auditTrail": {
+    "verifiedBy": "Government Carbon Registry Service",
+    "lastChecked": "2026-02-26T20:00:00Z",
+    "verificationStatus": "Certified"
+  },
+  "modelVersion": "v1.0-mock",
+  "confidenceScore": 0.9,
   "timestamp": "2026-02-26T20:05:00Z"
 }
