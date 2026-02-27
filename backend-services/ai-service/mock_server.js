@@ -74,6 +74,49 @@ app.post("/api/v1/ai/greenhouse-advice", authorizeRole(["Farmer"]), (req, res) =
   res.json({ success: true, module: "AI - Greenhouse Advisory", data: greenhouseAdvice });
 });
 
+// ==================== WEATHER-CROP ADVISORY ====================
+app.post("/api/v1/ai/weather-crop-advice", authorizeRole(["Farmer"]), (req, res) => {
+  const { region, date } = req.body;
+
+  // Mock logic: In real system, fetch weather API + seasonal cycle
+  const advice = {
+    region,
+    date,
+    currentSeason: "Rabi (Oct–March)",
+    weatherForecast: {
+      temperature: "18°C",
+      rainfall: "Moderate",
+      humidity: "65%"
+    },
+    recommendedCrops: [
+      {
+        name: "Wheat",
+        cultivationTimelineDays: 120,
+        estimatedSetupCostINR: 200000,
+        maintenanceCostPerMonthINR: 7000,
+        maintenanceAdvice: "Ensure irrigation planning due to moderate rainfall forecast."
+      },
+      {
+        name: "Rose (Greenhouse)",
+        cultivationTimelineDays: 120,
+        estimatedSetupCostINR: 220000,
+        maintenanceCostPerMonthINR: 8000,
+        maintenanceAdvice: "Maintain humidity at 60–70% for optimal flowering."
+      }
+    ],
+    schemesEligible: [
+      "PM-Kisan Income Support",
+      "Crop Insurance Scheme",
+      "National Horticulture Mission"
+    ],
+    modelVersion: "v1.0-mock",
+    confidenceScore: 0.9,
+    timestamp: new Date().toISOString()
+  };
+
+  res.json({ success: true, module: "AI - Weather Crop Advisory", data: advice });
+});
+
 // ==================== MARKETPLACE MODULE ====================
 app.get("/api/v1/marketplace/listings", authorizeRole(["Buyer", "Cooperative"]), (req, res) => {
   res.json({
@@ -104,11 +147,9 @@ app.get("/api/v1/analytics/soil-health", authorizeRole(["Farmer", "GovernmentOff
 });
 
 // ==================== GOVERNMENT VERIFICATION ====================
-// Mock endpoint to verify farmer identity and welfare scheme eligibility
 app.post("/api/v1/government/verify-farmer", authorizeRole(["GovernmentOfficer", "Admin"]), (req, res) => {
   const { farmerId } = req.body;
 
-  // In real system, this would call State/Central databases
   res.json({
     success: true,
     module: "Government Farmer Verification",
@@ -127,7 +168,6 @@ app.post("/api/v1/government/verify-farmer", authorizeRole(["GovernmentOfficer",
     }
   });
 });
-
 
 // ==================== AUTH MOCK ====================
 app.post("/api/v1/auth/login", (req, res) => {
