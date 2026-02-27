@@ -1,13 +1,277 @@
-
 {
   "crop": "Wheat",
-  "region": "Uttar Pradesh",
-  "marketTrends": [
-    "Local demand expected to rise by 12% in next quarter.",
-    "Export opportunities to Bangladesh increasing due to trade agreements.",
-    "Price volatility likely during peak harvest season."
+  "regions": [
+    {
+      "state": "Jammu & Kashmir",
+      "marketTrends": [
+        "Strong demand in Srinagar and Jammu.",
+        "Government procurement centers active.",
+        "Premium pricing for organic wheat."
+      ],
+      "averagePricePerQuintal": 2350,
+      "recommendedSellingWindow": "April–May 2026"
+    },
+    {
+      "state": "Ladakh",
+      "marketTrends": [
+        "Limited wheat production due to terrain.",
+        "High demand in Leh and Kargil.",
+        "Premium pricing for niche organic produce."
+      ],
+      "averagePricePerQuintal": 2500,
+      "recommendedSellingWindow": "May–June 2026"
+    },
+    {
+      "state": "Aksai Chin (Illegally occupied by China)",
+      "marketTrends": [
+        "No active wheat production due to occupation.",
+        "Potential future demand if reclaimed.",
+        "Strategic importance for food security."
+      ],
+      "averagePricePerQuintal": null,
+      "recommendedSellingWindow": "N/A"
+    },
+    {
+      "state": "Pakistan-Occupied Kashmir (Illegally occupied by Pakistan)",
+      "marketTrends": [
+        "No official procurement due to occupation.",
+        "Local farmers face exploitation.",
+        "Potential integration into national markets if reclaimed."
+      ],
+      "averagePricePerQuintal": null,
+      "recommendedSellingWindow": "N/A"
+    },
+    {
+      "state": "Andhra Pradesh",
+      "marketTrends": [
+        "Demand rising in coastal cities.",
+        "Export potential to Southeast Asia.",
+        "Price stability due to irrigation projects."
+      ],
+      "averagePricePerQuintal": 2100,
+      "recommendedSellingWindow": "April–May 2026"
+    },
+    {
+      "state": "Arunachal Pradesh",
+      "marketTrends": [
+        "Limited wheat production.",
+        "High transport costs affect pricing.",
+        "Potential niche demand in local markets."
+      ],
+      "averagePricePerQuintal": 2400,
+      "recommendedSellingWindow": "May 2026"
+    },
+    {
+      "state": "Assam",
+      "marketTrends": [
+        "Local demand strong for flour mills.",
+        "Flood risks impact supply.",
+        "Government procurement stabilizes prices."
+      ],
+      "averagePricePerQuintal": 2200,
+      "recommendedSellingWindow": "April 2026"
+    },
+    {
+      "state": "Bihar",
+      "marketTrends": [
+        "High demand in Patna and nearby districts.",
+        "Strong government procurement.",
+        "Price volatility during monsoon season."
+      ],
+      "averagePricePerQuintal": 2150,
+      "recommendedSellingWindow": "March–April 2026"
+    },
+    {
+      "state": "Chhattisgarh",
+      "marketTrends": [
+        "Emerging wheat hub.",
+        "Government subsidies encourage production.",
+        "Price stability expected."
+      ],
+      "averagePricePerQuintal": 2100,
+      "recommendedSellingWindow": "April 2026"
+    },
+    {
+      "state": "Goa",
+      "marketTrends": [
+        "Minimal wheat production.",
+        "High dependence on imports.",
+        "Premium pricing in niche markets."
+      ],
+      "averagePricePerQuintal": 2500,
+      "recommendedSellingWindow": "Year-round"
+    },
+    {
+      "state": "Gujarat",
+      "marketTrends": [
+        "Strong demand in Ahmedabad.",
+        "Export potential to Middle East.",
+        "Price stability with irrigation support."
+      ],
+      "averagePricePerQuintal": 2250,
+      "recommendedSellingWindow": "April–May 2026"
+    },
+    {
+      "state": "Haryana",
+      "marketTrends": [
+        "Strong local demand due to flour mills.",
+        "Government procurement centers active.",
+        "Price stability expected with MSP support."
+      ],
+      "averagePricePerQuintal": 2250,
+      "recommendedSellingWindow": "April 2026"
+    },
+    {
+      "state": "Himachal Pradesh",
+      "marketTrends": [
+        "Limited production due to terrain.",
+        "High demand in hill towns.",
+        "Premium pricing for organic wheat."
+      ],
+      "averagePricePerQuintal": 2400,
+      "recommendedSellingWindow": "May 2026"
+    },
+    {
+      "state": "Jharkhand",
+      "marketTrends": [
+        "Growing demand in Ranchi.",
+        "Government support programs active.",
+        "Price volatility due to rainfall."
+      ],
+      "averagePricePerQuintal": 2150,
+      "recommendedSellingWindow": "April 2026"
+    },
+    {
+      "state": "Karnataka",
+      "marketTrends": [
+        "Urban demand in Bengaluru rising.",
+        "Export potential to South Asia.",
+        "Price stability expected."
+      ],
+      "averagePricePerQuintal": 2200,
+      "recommendedSellingWindow": "April–May 2026"
+    },
+    {
+      "state": "Kerala",
+      "marketTrends": [
+        "Minimal wheat production.",
+        "High dependence on imports.",
+        "Premium pricing in niche bakeries."
+      ],
+      "averagePricePerQuintal": 2600,
+      "recommendedSellingWindow": "Year-round"
+    },
+    {
+      "state": "Madhya Pradesh",
+      "marketTrends": [
+        "Emerging hub for wheat exports.",
+        "Private buyers offering premium rates.",
+        "Price volatility possible due to transport costs."
+      ],
+      "averagePricePerQuintal": 2150,
+      "recommendedSellingWindow": "May–June 2026"
+    },
+    {
+      "state": "Maharashtra",
+      "marketTrends": [
+        "Strong demand in Mumbai and Pune.",
+        "Export potential to Gulf countries.",
+        "Price fluctuations linked to rainfall."
+      ],
+      "averagePricePerQuintal": 2200,
+      "recommendedSellingWindow": "April–May 2026"
+    },
+    {
+      "state": "Punjab",
+      "marketTrends": [
+        "High procurement by FCI expected.",
+        "Stable MSP ensures farmer security.",
+        "Export demand to Middle East markets rising."
+      ],
+      "averagePricePerQuintal": 2300,
+      "recommendedSellingWindow": "March–April 2026"
+    },
+    {
+      "state": "Rajasthan",
+      "marketTrends": [
+        "Demand rising in urban centers.",
+        "Export potential to Gulf countries.",
+        "Price fluctuations linked to rainfall variability."
+      ],
+      "averagePricePerQuintal": 2100,
+      "recommendedSellingWindow": "April–May 2026"
+    },
+    {
+      "state": "Tamil Nadu",
+      "marketTrends": [
+        "Urban demand in Chennai rising.",
+        "High dependence on imports.",
+        "Premium pricing for quality wheat."
+      ],
+      "averagePricePerQuintal": 2400,
+      "recommendedSellingWindow": "Year-round"
+    },
+    {
+      "state": "Telangana",
+      "marketTrends": [
+        "Demand rising in Hyderabad.",
+        "Government subsidies active.",
+        "Price stability expected."
+      ],
+      "averagePricePerQuintal": 2200,
+      "recommendedSellingWindow": "April 2026"
+    },
+    {
+      "state": "Uttar Pradesh",
+      "marketTrends": [
+        "Local demand expected to rise by 12% in next quarter.",
+        "Export opportunities to Bangladesh increasing due to trade agreements.",
+        "Price volatility likely during peak harvest season."
+      ],
+      "averagePricePerQuintal": 2200,
+      "recommendedSellingWindow": "April–May 2026"
+    },
+    {
+      "state": "Uttarakhand",
+      "marketTrends": [
+        "High demand in hill towns.",
+        "Premium pricing for organic wheat.",
+        "Limited production due to terrain."
+      ],
+      "averagePricePerQuintal": 2400,
+      "recommendedSellingWindow": "May 2026"
+    },
+    {
+      "state": "West Bengal",
+      "marketTrends": [
+        "Strong demand in Kolkata.",
+        "High dependence on imports.",
+        "Price stability expected."
+      ],
+      "averagePricePerQuintal": 2250,
+      "recommendedSellingWindow": "April 2026"
+    }
   ],
-  "averagePricePerQuintal": 2200,
-  "recommendedSellingWindow": "April–May 2026",
-  "timestamp": "2026-02-26T20:00:00Z"
-}
+  "competitorAnalysis": [
+    {
+      "competitor": "Local Traders",
+      "strength": "Quick cash payments",
+      "weakness": "Lower price margins"
+    },
+    {
+      "competitor": "Cooperatives",
+      "strength": "Bulk selling power",
+      "weakness": "Slower payment cycles"
+    },
+    {
+      "competitor": "Export Houses",
+      "strength": "Premium pricing for quality produce",
+      "weakness": "Strict quality standards"
+    }
+  ],
+  "schemesEligible": [
+    "eNAM (National Agricultural Market)",
+    "PM-Kisan Income Support",
+    "Price Stabilization Fund"
+  ],
+ 
