@@ -11,225 +11,303 @@ const { body, validationResult } = require("express-validator");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const SECRET_KEY = process.env.JWT_SECRET || "supersecretkey";
 
-// ==================== Middleware ====================
-app.use(cors());
-app.use(express.json());
-app.use(morgan("combined")); // ISO-compliant logging
-app.use(helmet()); // secure headers
+/* ==================== CORE HARDENING ==================== */
 
-// Rate limiting (prevent brute force / DoS)
-const limiter = rateLimit({
+app.disable("x-powered-by");
+app.set("trust proxy", 1);
+
+/* ==================== ENV VALIDATION ==================== */
+
+if (!process.env.JWT_SECRET) {
+  console.error("❌ JWT_SECRET is not defined in environment variables");
+  process.exit(1);
+}
+
+const SECRET_KEY = process.env.JWT_SECRET;
+
+/* ==================== SECURITY MIDDLEWARE ==================== */
+
+app.use(
+  helmet({
+    contentSecurityPolicy: false, // API backend only
+  })
+);
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      const allowedOrigin = process.env.ALLOWED_ORIGIN;
+
+      if (!origin) return callback(null, true); // allow Postman/curl
+
+      if (!allowedOrigin || allowedOrigin === "*") {
+        return callback(null, true);
+      }
+
+      if (origin === allowedOrigin) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
+
+app.use(express.json({ limit: "10kb" }));
+app.use(morgan("combined"));
+
+/* ==================== RATE LIMITING ==================== */
+
+const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: { success: false, error: "Too many requests, please try later." }
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
 });
-app.use(limiter);
+app.use(globalLimiter);
 
-// ==================== Load Mock Data ====================
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+});
+
+/* ==================== LOAD MOCK DATA ==================== */
+/* ⚠ Ensure file names EXACTLY match case (Linux is case-sensitive) */
+
 const agriAdvice = require("./mock_ai_agricultural_advice.json");
 const marketInsights = require("./mock_market_insights.json");
 const carbonCredits = require("./mock_carbon_credits.json");
 const businessAssessment = require("./mock_business_assessment.json");
 const greenhouseAdvice = require("./mock_greenhouse_advice.json");
 
-// ==================== Auth Middleware ====================
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-  if (!token) return res.status(401).json({ success: false, error: "Token missing" });
+/* ==================== AUTH MIDDLEWARE ==================== */
 
-  jwt.verify(token, SECRET_KEY, (err, user) => {
-    if (err) return res.status(403).json({ success: false, error: "Invalid or expired token" });
-    req.user = user;
-    next();
-  });
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ success: false, error: "Token missing" });
+  }
+
+  jwt.verify(
+    token,
+    SECRET_KEY,
+    { algorithms: ["HS256"] },
+    (err, user) => {
+      if (err) {
+        return res
+          .status(403)
+          .json({ success: false, error: "Invalid or expired token" });
+      }
+      req.user = user;
+      next();
+    }
+  );
 }
 
-// ==================== Role-Based Access Middleware ====================
+/* ==================== ROLE AUTHORIZATION ==================== */
+
 function authorizeRole(allowedRoles) {
   return (req, res, next) => {
-    const userRole = req.user?.role;
-    if (!userRole || !allowedRoles.includes(userRole)) {
+    const userRoles = req.user?.roles || [];
+
+    const isAuthorized = allowedRoles.some((role) =>
+      userRoles.includes(role)
+    );
+
+    if (!isAuthorized) {
       return res.status(403).json({
         success: false,
-        error: "Access denied. Role not authorized.",
-        requiredRoles: allowedRoles
+        error: "Access denied",
+        requiredRoles: allowedRoles,
       });
     }
+
     next();
   };
 }
 
-// ==================== Health & Root ====================
+/* ==================== HEALTH ==================== */
+
 app.get("/", (req, res) => {
   res.json({
     success: true,
-    module: "Platform Health",
-    data: {
-      platform: "Unified Farm AI (KrishiSetu)",
-      status: "Running",
-      version: "2.0.0-secure",
-      timestamp: new Date().toISOString()
-    }
+    service: "Unified Farm AI (KrishiSetu)",
+    version: "4.0.0-production",
+    environment: process.env.NODE_ENV || "development",
+    timestamp: new Date().toISOString(),
   });
 });
 
-app.get("/health", (req, res) => {
-  res.json({ success: true, module: "Health Check", data: { status: "OK" } });
+app.get("/health/live", (req, res) => {
+  res.status(200).json({ status: "alive" });
 });
 
-// ==================== AI MODULE ====================
-app.post("/api/v1/ai/agricultural-advice", authenticateToken, authorizeRole(["Farmer"]), (req, res) => {
-  res.json({ success: true, module: "AI - Agricultural Advisory", data: agriAdvice });
+app.get("/health/ready", (req, res) => {
+  res.status(200).json({
+    status: "ready",
+    uptimeSeconds: process.uptime(),
+    memoryUsage: process.memoryUsage(),
+  });
 });
 
-app.post("/api/v1/ai/assess-business", authenticateToken, authorizeRole(["Farmer"]), (req, res) => {
-  res.json({ success: true, module: "AI - Business Assessment", data: businessAssessment });
-});
+/* ==================== AUTH LOGIN ==================== */
 
-app.post("/api/v1/ai/market-analysis", authenticateToken, authorizeRole(["Buyer", "Cooperative"]), (req, res) => {
-  res.json({ success: true, module: "AI - Market Insights", data: marketInsights });
-});
+const ALLOWED_ROLES = [
+  "Farmer",
+  "Buyer",
+  "Cooperative",
+  "GovernmentOfficer",
+  "Admin",
+];
 
-app.post("/api/v1/ai/greenhouse-advice", authenticateToken, authorizeRole(["Farmer"]), (req, res) => {
-  res.json({ success: true, module: "AI - Greenhouse Advisory", data: greenhouseAdvice });
-});
-
-// ==================== WEATHER-CROP ADVISORY ====================
 app.post(
-  "/api/v1/ai/weather-crop-advice",
-  authenticateToken,
-  authorizeRole(["Farmer"]),
-  body("region").isString().notEmpty(),
-  body("date").isISO8601(),
+  "/api/v1/auth/login",
+  authLimiter,
+  body("username").trim().isString().notEmpty().escape(),
+  body("roles").isArray({ min: 1 }),
   (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ success: false, error: "Invalid input", details: errors.array() });
+      return res.status(400).json({
+        success: false,
+        error: "Invalid input",
+        details: errors.array(),
+      });
     }
 
-    const { region, date } = req.body;
-    const advice = {
-      region,
-      date,
-      currentSeason: "Rabi (Oct–March)",
-      weatherForecast: { temperature: "18°C", rainfall: "Moderate", humidity: "65%" },
-      recommendedCrops: [
-        {
-          name: "Wheat",
-          cultivationTimelineDays: 120,
-          estimatedSetupCostINR: 200000,
-          maintenanceCostPerMonthINR: 7000,
-          maintenanceAdvice: "Ensure irrigation planning due to moderate rainfall forecast."
-        },
-        {
-          name: "Rose (Greenhouse)",
-          cultivationTimelineDays: 120,
-          estimatedSetupCostINR: 220000,
-          maintenanceCostPerMonthINR: 8000,
-          maintenanceAdvice: "Maintain humidity at 60–70% for optimal flowering."
-        }
-      ],
-      schemesEligible: ["PM-Kisan Income Support", "Crop Insurance Scheme", "National Horticulture Mission"],
-      modelVersion: "v2.0-secure",
-      confidenceScore: 0.9,
-      timestamp: new Date().toISOString()
-    };
+    const { username, roles } = req.body;
 
-    res.json({ success: true, module: "AI - Weather Crop Advisory", data: advice });
-  }
-);
-
-// ==================== MARKETPLACE MODULE ====================
-app.get("/api/v1/marketplace/listings", authenticateToken, authorizeRole(["Buyer", "Cooperative"]), (req, res) => {
-  res.json({
-    success: true,
-    module: "Marketplace Listings",
-    data: [
-      { id: 1, crop: "Organic Tomatoes", freshnessScore: 92, pricePerKg: 28, farmerId: "FARM102" },
-      { id: 2, crop: "Basmati Rice", freshnessScore: 88, pricePerKg: 60, farmerId: "FARM203" }
-    ]
-  });
-});
-
-// ==================== GOVERNMENT / CARBON DASHBOARD ====================
-app.get("/api/v1/analytics/carbon", authenticateToken, authorizeRole(["GovernmentOfficer", "Admin"]), (req, res) => {
-  res.json({ success: true, module: "Carbon Credit Dashboard", data: carbonCredits });
-});
-
-app.get("/api/v1/analytics/soil-health", authenticateToken, authorizeRole(["Farmer", "GovernmentOfficer"]), (req, res) => {
-  res.json({
-    success: true,
-    module: "Soil Health Dashboard",
-    data: { soilIndex: 78, recommendation: "Increase organic compost usage", district: "Pilot District A" }
-  });
-});
-
-// ==================== GOVERNMENT VERIFICATION ====================
-app.post(
-  "/api/v1/government/verify-farmer",
-  authenticateToken,
-  authorizeRole(["GovernmentOfficer", "Admin"]),
-  body("farmerId").isString().notEmpty(),
-  (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ success: false, error: "Invalid input", details: errors.array() });
+    const invalidRole = roles.find((role) => !ALLOWED_ROLES.includes(role));
+    if (invalidRole) {
+      return res.status(400).json({
+        success: false,
+        error: `Invalid role specified: ${invalidRole}`,
+      });
     }
 
-    const { farmerId } = req.body;
+    const uniqueRoles = [...new Set(roles)];
+
+    const token = jwt.sign(
+      { username, roles: uniqueRoles },
+      SECRET_KEY,
+      { expiresIn: "1h", algorithm: "HS256" }
+    );
+
     res.json({
       success: true,
-      module: "Government Farmer Verification",
-      data: {
-        farmerId,
-        verified: true,
-        schemesEligible: [
-          "PM-Kisan Income Support",
-          "Crop Insurance Scheme",
-          "Soil Health Card Program",
-          "Organic Farming Subsidy",
-          "Price Stabilization Fund"
-        ],
-        timestamp: new Date().toISOString(),
-        modelVersion: "v2.0-secure",
-        confidenceScore: 0.95
-      }
+      token,
+      expiresIn: "1h",
     });
   }
 );
 
-// ==================== GOVERNMENT SCHEME NOTIFICATIONS ====================
-app.get("/api/v1/government/schemes/notify", authenticateToken, authorizeRole(["Farmer"]), (req, res) => {
-  const farmerId = req.user.username || "FARM001";
+/* ==================== AI MODULE ==================== */
 
-  const notifications = [
-    {
-      scheme: "PM-Kisan Income Support",
-      eligibility: true,
-      benefitAmountINR: 6000,
-      message: "You are eligible for PM-Kisan support. ₹6,000 annual income support available."
-    },
-    {
-      scheme: "Crop Insurance Scheme",
-      eligibility: true,
-      benefitAmountINR: 50000,
-      message: "You are eligible for crop insurance coverage up to ₹50,000."
-    },
-    {
-      scheme: "Organic Farming Subsidy",
-      eligibility: false,
-      message: "Not eligible currently. Requires certified organic farming registration."
-    }
-  ];
+app.post(
+  "/api/v1/ai/agricultural-advice",
+  authenticateToken,
+  authorizeRole(["Farmer"]),
+  (req, res) =>
+    res.json({
+      success: true,
+      module: "AI Agricultural Advisory",
+      data: agriAdvice,
+    })
+);
 
-  res.json({
-    success: true,
-    module: "Government Scheme Notifications",
-    data: {
-      farmerId,
-      notifications,
-      timestamp: new Date().toISOString(),
-      model
+app.post(
+  "/api/v1/ai/assess-business",
+  authenticateToken,
+  authorizeRole(["Farmer"]),
+  body("idea").trim().isString().notEmpty(),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(400).json({ success: false, error: "Invalid input" });
+
+    res.json({
+      success: true,
+      module: "AI Business Assessment",
+      data: businessAssessment,
+    });
+  }
+);
+
+app.post(
+  "/api/v1/ai/market-analysis",
+  authenticateToken,
+  authorizeRole(["Buyer", "Cooperative"]),
+  body("product").trim().isString().notEmpty(),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(400).json({ success: false, error: "Invalid input" });
+
+    res.json({
+      success: true,
+      module: "AI Market Insights",
+      data: marketInsights,
+    });
+  }
+);
+
+/* ==================== METRICS ==================== */
+
+app.get("/metrics", (req, res) => {
+  res.type("text/plain");
+  res.send(
+    `# HELP service_uptime_seconds Total uptime in seconds\nservice_uptime_seconds ${process.uptime()}`
+  );
+});
+
+/* ==================== 404 HANDLER ==================== */
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    error: "Route not found",
+    path: req.originalUrl,
+  });
+});
+
+/* ==================== GLOBAL ERROR HANDLER ==================== */
+
+app.use((err, req, res, next) => {
+  console.error("Unhandled Error:", err.message);
+  res.status(500).json({
+    success: false,
+    error: "Internal server error",
+  });
+});
+
+/* ==================== SERVER START ==================== */
+
+const server = app.listen(PORT, () => {
+  console.log(`🚀 Unified Farm AI running on port ${PORT}`);
+});
+
+/* ==================== PROCESS SAFETY ==================== */
+
+process.on("unhandledRejection", (reason) => {
+  console.error("Unhandled Rejection:", reason);
+});
+
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+  process.exit(1);
+});
+
+/* ==================== GRACEFUL SHUTDOWN ==================== */
+
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received. Shutting down gracefully...");
+  server.close(() => {
+    console.log("Server closed.");
+    process.exit(0);
+  });
+});
