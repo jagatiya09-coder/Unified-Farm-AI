@@ -1,3 +1,5 @@
+
+console.log("🔥 LOADED CORRECT MOCK SERVER FILE 🔥");
 const express = require("express");
 const app = express();
 
@@ -35,8 +37,12 @@ app.post("/api/v1/ai/greenhouse-advice", (req, res) => {
 // ==================== Analytics Endpoints ====================
 
 // Req 18: Carbon Credits & Sustainability
+//app.get("/api/v1/analytics/carbon", (req, res) => {
+//  res.json(carbonCredits);
+//});
+
 app.get("/api/v1/analytics/carbon", (req, res) => {
-  res.json(carbonCredits);
+  res.json({ test: "carbon route hit" });
 });
 
 // ==================== Server Startup ====================
