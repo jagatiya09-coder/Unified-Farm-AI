@@ -30,8 +30,3 @@ app.get("/api/v1/ai/business-assessment", (req, res) => {
 app.get("/api/v1/ai/greenhouse-advice", (req, res) => {
   res.json(greenhouseAdvice);
 });
-
-// Start server
-app.listen(3000, () => {
-  console.log("Unified Farm AI mock server running at http://localhost:3000");
-});
