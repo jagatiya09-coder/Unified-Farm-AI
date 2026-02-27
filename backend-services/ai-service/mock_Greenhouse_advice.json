@@ -1,104 +1,149 @@
 {
-  "cropOptions": {
-    "Medicinal Plants": [
-      {
-        "name": "Aloe Vera",
-        "uses": ["Medicine", "Cosmetics", "Skin Care"],
-        "bestSeasonRegion": "Year-round in South India (Tamil Nadu, Karnataka) due to warm climate",
-        "cultivationTimelineDays": 90,
-        "estimatedSetupCostINR": 150000,
-        "maintenanceCostPerMonthINR": 5000,
-        "maintenanceAdvice": "Requires controlled irrigation and regular pruning."
-      },
-      {
-        "name": "Ashwagandha",
-        "uses": ["Ayurvedic Medicine", "Immunity Booster"],
-        "bestSeasonRegion": "Rabi season (Oct–March) in Madhya Pradesh, Rajasthan",
-        "cultivationTimelineDays": 120,
-        "estimatedSetupCostINR": 180000,
-        "maintenanceCostPerMonthINR": 6000,
-        "maintenanceAdvice": "Maintain soil pH between 7–8; moderate watering."
+  "greenhouseAdvisory": {
+
+    "financialOverviewSummary": {
+      "setupCostINR": 150000,
+      "monthlyMaintenanceINR": 5000,
+      "expectedYieldKgPerCycle": 8000,
+      "averageMarketPriceINRPerKg": 18,
+      "grossRevenuePerCycleINR": 144000,
+      "estimatedNetProfitPerCycleINR": 60000,
+      "roiPercentAnnual": 42,
+      "breakEvenMonths": 8
+    },
+
+    "primaryRecommendation": {
+      "name": "Aloe Vera",
+      "rank": 1,
+      "suitabilityScore": 0.96,
+      "confidenceScore": 0.95
+    },
+
+    "climateResilience": {
+      "optimalTemperatureRangeCelsius": "18–35",
+      "heatToleranceThresholdCelsius": 42,
+      "coldToleranceThresholdCelsius": 5,
+      "droughtToleranceLevel": "High",
+      "optimalRainfallRangeMMPerYear": "400–800",
+      "climateResilienceScore": 0.91,
+      "seasonalRainfallVariabilityImpact": {
+        "droughtYearROIChangePercent": -12,
+        "excessRainfallYearROIChangePercent": -8
       }
-    ],
-    "Cosmetic & Fragrance Crops": [
+    },
+
+    "alternativeCropRanking": [
       {
-        "name": "Lavender",
-        "uses": ["Perfumes", "Essential Oils", "Aromatherapy"],
-        "bestSeasonRegion": "Spring (Feb–April) in Himachal Pradesh, Uttarakhand",
-        "cultivationTimelineDays": 150,
-        "estimatedSetupCostINR": 200000,
-        "maintenanceCostPerMonthINR": 7000,
-        "maintenanceAdvice": "Requires well-drained soil and controlled humidity."
-      },
-      {
-        "name": "Rose",
-        "uses": ["Perfumes", "Cosmetics", "Medicinal extracts"],
-        "bestSeasonRegion": "Winter (Nov–Feb) in Uttar Pradesh, Punjab",
-        "cultivationTimelineDays": 120,
-        "estimatedSetupCostINR": 220000,
-        "maintenanceCostPerMonthINR": 8000,
-        "maintenanceAdvice": "Regular pruning and pest control essential."
-      }
-    ],
-    "Superfruits & Superfoods": [
-      {
-        "name": "Blueberries",
-        "uses": ["Superfruit", "Nutraceuticals"],
-        "bestSeasonRegion": "Cool climates (Himachal Pradesh, Jammu & Kashmir) during spring",
-        "cultivationTimelineDays": 180,
-        "estimatedSetupCostINR": 250000,
-        "maintenanceCostPerMonthINR": 10000,
-        "maintenanceAdvice": "Requires acidic soil and temperature control."
-      },
-      {
-        "name": "Quinoa",
-        "uses": ["Superfood", "High-protein grain"],
-        "bestSeasonRegion": "Rabi season (Oct–March) in Rajasthan, Gujarat",
-        "cultivationTimelineDays": 120,
-        "estimatedSetupCostINR": 200000,
-        "maintenanceCostPerMonthINR": 7000,
-        "maintenanceAdvice": "Ensure proper drainage and moderate irrigation."
-      }
-    ],
-    "Flowers": [
-      {
-        "name": "Orchids",
-        "uses": ["Luxury flowers", "Export market"],
-        "bestSeasonRegion": "Year-round in controlled greenhouses (Kerala, Tamil Nadu)",
-        "cultivationTimelineDays": 240,
-        "estimatedSetupCostINR": 300000,
-        "maintenanceCostPerMonthINR": 12000,
-        "maintenanceAdvice": "Requires controlled humidity and nutrient misting."
+        "name": "Tulsi (Holy Basil)",
+        "rank": 2,
+        "suitabilityScore": 0.90,
+        "confidenceScore": 0.88,
+        "baseProjectedROI": 38,
+        "roiConfidenceIntervalPercent": {
+          "lowerBound": 32,
+          "expected": 38,
+          "upperBound": 44
+        }
       },
       {
         "name": "Gerbera",
-        "uses": ["Decorative flowers", "Bouquet industry"],
-        "bestSeasonRegion": "Winter and spring (Nov–April) in Maharashtra, Karnataka",
-        "cultivationTimelineDays": 90,
-        "estimatedSetupCostINR": 180000,
-        "maintenanceCostPerMonthINR": 6000,
-        "maintenanceAdvice": "Needs drip irrigation and pest monitoring."
+        "rank": 3,
+        "suitabilityScore": 0.84,
+        "confidenceScore": 0.82,
+        "baseProjectedROI": 34,
+        "roiConfidenceIntervalPercent": {
+          "lowerBound": 28,
+          "expected": 34,
+          "upperBound": 40
+        }
       }
-    ]
-  },
-  "advantages": [
-    "Controlled environment reduces risk from weather disasters.",
-    "Higher yield per square meter compared to open fields.",
-    "Year-round production ensures steady income.",
-    "Premium pricing in urban and export markets."
-  ],
-  "riskMitigation": [
-    "Diversifies income sources.",
-    "Acts as a backup in case of seasonal crop failure.",
-    "Can integrate with carbon credit programs for sustainability."
-  ],
-  "schemesEligible": [
-    "National Horticulture Mission",
-    "PM-Kisan Income Support",
-    "Organic Farming Subsidy",
-    "Export Promotion Scheme"
-  ],
-  "modelVersion": "v1.0-mock",
-  "confidenceScore": 0.9,
-  "timestamp": "2026-02-27T15:00:00Z"
+    ],
+
+    "exportReadiness": {
+      "averageShippingTimeDays": {
+        "UAE": 3,
+        "EU": 6,
+        "Japan": 7
+      },
+      "customsClearanceRangeDays": "2–5",
+      "averageFreightCostPerKgINR": 8.5,
+      "marketRejectionRatesPercent": {
+        "UAE": 4,
+        "EU": 6,
+        "Japan": 5
+      },
+      "primaryRejectionCauses": [
+        "Moisture deviation",
+        "Certification mismatch",
+        "Improper grading"
+      ],
+      "riskMitigationStrategies": [
+        "Pre-shipment third-party inspection",
+        "Cold chain moisture control",
+        "Digital traceability compliance"
+      ]
+    },
+
+    "communityAndCooperativeLayer": {
+      "sharedInfrastructureSavingsPercent": {
+        "coldStorage": 15,
+        "transport": 12,
+        "bulkInputPurchase": 10
+      },
+      "collectiveBargainingSavingsPercent": 10,
+      "estimatedPestLossReductionPercentFromPeerLearning": 8,
+      "trainingImpactPercentYieldIncrease": 9
+    },
+
+    "scenarioAnalysis": {
+      "primaryCropScenarios": {
+        "priceCrash15Percent": { "revisedROI": 28, "probabilityWeight": 0.25 },
+        "exportBanScenario": { "revisedROI": 24, "probabilityWeight": 0.10 },
+        "subsidyReduced20Percent": { "revisedROI": 35, "probabilityWeight": 0.20 },
+        "droughtYearScenario": { "revisedROI": 30, "probabilityWeight": 0.18 },
+        "excessRainfallScenario": { "revisedROI": 33, "probabilityWeight": 0.12 }
+      }
+    },
+
+    "financialSensitivity": {
+      "roiConfidenceIntervalPercent": {
+        "lowerBound": 36,
+        "expected": 42,
+        "upperBound": 49
+      },
+      "riskAdjustedROIWeighted": 37,
+      "riskAdjustedRangePercent": {
+        "lowerWeighted": 29,
+        "upperWeighted": 44
+      }
+    },
+
+    "aiInsights": {
+      "expectedROIPrimary": 42,
+      "riskAdjustedROIPrimary": 37,
+      "primaryROIRangeRiskWeighted": {
+        "lower": 29,
+        "upper": 44
+      },
+      "alternativeCropROIConfidenceIntervals": {
+        "Tulsi": { "lowerBound": 32, "expected": 38, "upperBound": 44 },
+        "Gerbera": { "lowerBound": 28, "expected": 34, "upperBound": 40 }
+      },
+      "climateStressImpactSummary": "Drought years may reduce ROI by ~12%, while excess rainfall may reduce ROI by ~8%.",
+      "exportRiskInsight": "EU market shows slightly higher rejection risk (6%) compared to UAE (4%).",
+      "trainingImpactInsight": "Participation in KVK and structured workshops may improve yield by ~9%, partially offsetting climate stress.",
+      "decisionSummary": "Aloe Vera remains the most climate-resilient and export-stable option under weighted probabilistic modeling. Tulsi offers higher upside volatility, while Gerbera provides diversification with moderate export compliance risk.",
+      "confidenceLevelOverall": 0.97,
+      "modelVersion": "v17.0-climate-stress-export-profiled"
+    },
+
+    "observability": {
+      "dataRefreshFrequency": "Weekly (Climate), Monthly (Market), Quarterly (Export & Training Impact)",
+      "modelAccuracy": {
+        "precision": 0.93,
+        "recall": 0.91,
+        "f1Score": 0.92
+      }
+    }
+  }
 }
