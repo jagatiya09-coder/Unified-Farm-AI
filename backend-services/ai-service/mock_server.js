@@ -10,23 +10,37 @@ const carbonCredits = require("./mock_carbon_credits.json");
 const businessAssessment = require("./mock_business_assessment.json");
 const greenhouseAdvice = require("./mock_greenhouse_advice.json");
 
-// Endpoints
+// ==================== AI Service Endpoints ====================
+
+// Req 3: Agricultural Optimization
 app.post("/api/v1/ai/agricultural-advice", (req, res) => {
   res.json(agriAdvice);
 });
 
-app.get("/api/v1/ai/market-insights", (req, res) => {
-  res.json(marketInsights);
-});
-
-app.get("/api/v1/ai/carbon-credits", (req, res) => {
-  res.json(carbonCredits);
-});
-
-app.get("/api/v1/ai/business-assessment", (req, res) => {
+// Req 2: Business Idea Assessment
+app.post("/api/v1/ai/assess-business", (req, res) => {
   res.json(businessAssessment);
 });
 
-app.get("/api/v1/ai/greenhouse-advice", (req, res) => {
+// Req 4: Market Analysis
+app.post("/api/v1/ai/market-analysis", (req, res) => {
+  res.json(marketInsights);
+});
+
+// Greenhouse-specific advice (extension of Req 3)
+app.post("/api/v1/ai/greenhouse-advice", (req, res) => {
   res.json(greenhouseAdvice);
+});
+
+// ==================== Analytics Endpoints ====================
+
+// Req 18: Carbon Credits & Sustainability
+app.get("/api/v1/analytics/carbon", (req, res) => {
+  res.json(carbonCredits);
+});
+
+// ==================== Server Startup ====================
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Unified Farm AI mock server running at http://localhost:${PORT}`);
 });
