@@ -1,5 +1,6 @@
 {
   "farmerName": "Demo Farmer",
+  "farmerId": "FARM001",
   "farmSize": "10 acres",
   "financialHealth": "Moderate",
   "viabilityScore": 78,
@@ -24,6 +25,17 @@
     "funding": "₹2,00,000",
     "labor": "5 workers",
     "equipment": ["Tractor", "Drip Irrigation Kit"]
+  },
+  "schemesEligible": [
+    "PM-Kisan Income Support",
+    "Crop Insurance Scheme",
+    "Soil Health Card Program",
+    "Organic Farming Subsidy"
+  ],
+  "auditTrail": {
+    "verifiedBy": "Government Farmer Verification Service",
+    "lastChecked": "2026-02-26T20:05:00Z",
+    "verificationStatus": "Verified"
   },
   "modelVersion": "v1.0-mock",
   "confidenceScore": 0.85,
