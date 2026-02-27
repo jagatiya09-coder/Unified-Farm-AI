@@ -1,313 +1,276 @@
 console.log("LOADED FILE:", __filename);
 
 require("dotenv").config();
+
 const express = require("express");
-const morgan = require("morgan");
-const cors = require("cors");
 const helmet = require("helmet");
+const cors = require("cors");
+const morgan = require("morgan");
 const jwt = require("jsonwebtoken");
 const rateLimit = require("express-rate-limit");
 const { body, validationResult } = require("express-validator");
+const winston = require("winston");
+const client = require("prom-client");
+const fs = require("fs");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-/* ==================== CORE HARDENING ==================== */
+/* ============================================================
+   ERROR ENUM
+============================================================ */
 
-app.disable("x-powered-by");
-app.set("trust proxy", 1);
+const ERR = {
+  TOKEN_MISSING: "ERR_TOKEN_MISSING",
+  TOKEN_INVALID: "ERR_TOKEN_INVALID",
+  ACCESS_DENIED: "ERR_ACCESS_DENIED",
+  VALIDATION_FAILED: "ERR_VALIDATION_FAILED",
+  INVALID_ROLE: "ERR_INVALID_ROLE",
+  HTTPS_REQUIRED: "ERR_HTTPS_REQUIRED",
+  INTERNAL: "ERR_INTERNAL_SERVER",
+  MISSING_ENV: "ERR_MISSING_ENV",
+  VAULT_REQUIRED: "ERR_VAULT_REQUIRED"
+};
 
-/* ==================== ENV VALIDATION ==================== */
+/* ============================================================
+   VAULT ENFORCEMENT
+============================================================ */
 
-if (!process.env.JWT_SECRET) {
-  console.error("❌ JWT_SECRET is not defined in environment variables");
-  process.exit(1);
+if (process.env.VAULT_REQUIRED === "true") {
+  if (!process.env.JWT_SECRET) {
+    console.error("Vault enforcement active: JWT_SECRET missing");
+    process.exit(1);
+  }
 }
 
 const SECRET_KEY = process.env.JWT_SECRET;
 
-/* ==================== SECURITY MIDDLEWARE ==================== */
+/* ============================================================
+   LOGGER (Structured + Rotating File)
+============================================================ */
 
-app.use(
-  helmet({
-    contentSecurityPolicy: false, // API backend only
-  })
-);
-
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      const allowedOrigin = process.env.ALLOWED_ORIGIN;
-
-      if (!origin) return callback(null, true); // allow Postman/curl
-
-      if (!allowedOrigin || allowedOrigin === "*") {
-        return callback(null, true);
-      }
-
-      if (origin === allowedOrigin) {
-        return callback(null, true);
-      } else {
-        return callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: ["GET", "POST"],
-    credentials: true,
-  })
-);
-
-app.use(express.json({ limit: "10kb" }));
-app.use(morgan("combined"));
-
-/* ==================== RATE LIMITING ==================== */
-
-const globalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 200,
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-app.use(globalLimiter);
-
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 20,
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({
+      filename: "audit.log",
+      maxsize: 5 * 1024 * 1024,
+      maxFiles: 5
+    })
+  ]
 });
 
-/* ==================== LOAD MOCK DATA ==================== */
-/* ⚠ Ensure file names EXACTLY match case (Linux is case-sensitive) */
-
-const agriAdvice = require("./mock_ai_agricultural_advice.json");
-const marketInsights = require("./mock_market_insights.json");
-const carbonCredits = require("./mock_carbon_credits.json");
-const businessAssessment = require("./mock_business_assessment.json");
-const greenhouseAdvice = require("./mock_greenhouse_advice.json");
-
-/* ==================== AUTH MIDDLEWARE ==================== */
-
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ success: false, error: "Token missing" });
-  }
-
-  jwt.verify(
-    token,
-    SECRET_KEY,
-    { algorithms: ["HS256"] },
-    (err, user) => {
-      if (err) {
-        return res
-          .status(403)
-          .json({ success: false, error: "Invalid or expired token" });
-      }
-      req.user = user;
-      next();
-    }
-  );
+function audit(action, req, meta = {}) {
+  logger.info({
+    type: "AUDIT",
+    action,
+    user: req.user?.username || "anonymous",
+    roles: req.user?.roles || [],
+    endpoint: req.originalUrl,
+    method: req.method,
+    ...meta
+  });
 }
 
-/* ==================== ROLE AUTHORIZATION ==================== */
+/* ============================================================
+   PROMETHEUS METRICS
+============================================================ */
 
-function authorizeRole(allowedRoles) {
+client.collectDefaultMetrics();
+
+const httpHistogram = new client.Histogram({
+  name: "http_request_duration_seconds",
+  help: "HTTP request duration",
+  labelNames: ["method", "route", "status"],
+  buckets: [0.05, 0.1, 0.3, 0.5, 1, 2, 5]
+});
+
+app.use((req, res, next) => {
+  const end = httpHistogram.startTimer();
+  res.on("finish", () => {
+    end({
+      method: req.method,
+      route: req.route?.path || req.path,
+      status: res.statusCode
+    });
+  });
+  next();
+});
+
+/* ============================================================
+   SECURITY
+============================================================ */
+
+app.disable("x-powered-by");
+app.set("trust proxy", 1);
+
+if (process.env.NODE_ENV === "production") {
+  app.use((req, res, next) => {
+    if (req.secure || req.headers["x-forwarded-proto"] === "https")
+      return next();
+    return res.status(403).json({ success: false, errorCode: ERR.HTTPS_REQUIRED });
+  });
+}
+
+app.use(helmet());
+app.use(cors({ origin: process.env.ALLOWED_ORIGIN || "*" }));
+app.use(express.json({ limit: "10kb" }));
+app.use(morgan("combined"));
+app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 200 }));
+
+/* ============================================================
+   ROLE HIERARCHY
+============================================================ */
+
+const ROLE_HIERARCHY = {
+  Farmer: [],
+  Buyer: ["Farmer"],
+  GovernmentOfficer: ["Buyer"],
+  Admin: ["GovernmentOfficer"]
+};
+
+const PERMISSIONS = {
+  Farmer: ["AI_ADVICE", "GREENHOUSE"],
+  Buyer: ["MARKET_ANALYSIS"],
+  GovernmentOfficer: ["VERIFY_FARMER"],
+  Admin: ["*"]
+};
+
+function expandRoles(role) {
+  const inherited = ROLE_HIERARCHY[role] || [];
+  return [role, ...inherited.flatMap(expandRoles)];
+}
+
+function authorize(permission) {
   return (req, res, next) => {
-    const userRoles = req.user?.roles || [];
+    const roles = req.user?.roles || [];
 
-    const isAuthorized = allowedRoles.some((role) =>
-      userRoles.includes(role)
+    const allRoles = roles.flatMap(expandRoles);
+
+    const allowed = allRoles.some(role =>
+      PERMISSIONS[role]?.includes(permission) ||
+      PERMISSIONS[role]?.includes("*")
     );
 
-    if (!isAuthorized) {
-      return res.status(403).json({
-        success: false,
-        error: "Access denied",
-        requiredRoles: allowedRoles,
-      });
-    }
+    if (!allowed)
+      return res.status(403).json({ success: false, errorCode: ERR.ACCESS_DENIED });
 
     next();
   };
 }
 
-/* ==================== HEALTH ==================== */
+/* ============================================================
+   AUTH
+============================================================ */
 
-app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    service: "Unified Farm AI (KrishiSetu)",
-    version: "4.0.0-production",
-    environment: process.env.NODE_ENV || "development",
-    timestamp: new Date().toISOString(),
+function authenticate(req, res, next) {
+  const header = req.headers.authorization;
+  const token = header && header.split(" ")[1];
+
+  if (!token)
+    return res.status(401).json({ success: false, errorCode: ERR.TOKEN_MISSING });
+
+  jwt.verify(token, SECRET_KEY, { algorithms: ["HS256"] }, (err, user) => {
+    if (err)
+      return res.status(403).json({ success: false, errorCode: ERR.TOKEN_INVALID });
+    req.user = user;
+    next();
   });
-});
+}
+
+/* ============================================================
+   VALIDATION MIDDLEWARE
+============================================================ */
+
+function validate(req, res, next) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      errorCode: ERR.VALIDATION_FAILED,
+      details: errors.array()
+    });
+  }
+  next();
+}
+
+/* ============================================================
+   HEALTH ENDPOINTS (K8s/ECS)
+============================================================ */
+
+let isReady = true;
 
 app.get("/health/live", (req, res) => {
   res.status(200).json({ status: "alive" });
 });
 
 app.get("/health/ready", (req, res) => {
-  res.status(200).json({
-    status: "ready",
-    uptimeSeconds: process.uptime(),
-    memoryUsage: process.memoryUsage(),
-  });
+  if (!isReady) return res.status(503).json({ status: "not_ready" });
+  res.status(200).json({ status: "ready" });
 });
 
-/* ==================== AUTH LOGIN ==================== */
+/* ============================================================
+   LOGIN
+============================================================ */
 
-const ALLOWED_ROLES = [
-  "Farmer",
-  "Buyer",
-  "Cooperative",
-  "GovernmentOfficer",
-  "Admin",
-];
-
-app.post(
-  "/api/v1/auth/login",
-  authLimiter,
-  body("username").trim().isString().notEmpty().escape(),
+app.post("/api/v1/auth/login",
+  body("username").notEmpty(),
   body("roles").isArray({ min: 1 }),
+  validate,
   (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        success: false,
-        error: "Invalid input",
-        details: errors.array(),
-      });
-    }
-
     const { username, roles } = req.body;
-
-    const invalidRole = roles.find((role) => !ALLOWED_ROLES.includes(role));
-    if (invalidRole) {
-      return res.status(400).json({
-        success: false,
-        error: `Invalid role specified: ${invalidRole}`,
-      });
-    }
-
-    const uniqueRoles = [...new Set(roles)];
-
-    const token = jwt.sign(
-      { username, roles: uniqueRoles },
-      SECRET_KEY,
-      { expiresIn: "1h", algorithm: "HS256" }
-    );
-
-    res.json({
-      success: true,
-      token,
-      expiresIn: "1h",
-    });
+    const token = jwt.sign({ username, roles }, SECRET_KEY, { expiresIn: "1h" });
+    logger.info({ event: "login_success", user: username });
+    res.json({ success: true, token });
   }
 );
 
-/* ==================== AI MODULE ==================== */
+/* ============================================================
+   AI ENDPOINT
+============================================================ */
 
-app.post(
-  "/api/v1/ai/agricultural-advice",
-  authenticateToken,
-  authorizeRole(["Farmer"]),
-  (req, res) =>
-    res.json({
-      success: true,
-      module: "AI Agricultural Advisory",
-      data: agriAdvice,
-    })
-);
-
-app.post(
-  "/api/v1/ai/assess-business",
-  authenticateToken,
-  authorizeRole(["Farmer"]),
-  body("idea").trim().isString().notEmpty(),
+app.post("/api/v1/ai/agricultural-advice",
+  authenticate,
+  authorize("AI_ADVICE"),
+  body("cropType").notEmpty(),
+  body("region").notEmpty(),
+  validate,
   (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty())
-      return res.status(400).json({ success: false, error: "Invalid input" });
-
-    res.json({
-      success: true,
-      module: "AI Business Assessment",
-      data: businessAssessment,
-    });
+    audit("agricultural_advice_requested", req);
+    res.json({ success: true, advice: "Use drip irrigation" });
   }
 );
 
-app.post(
-  "/api/v1/ai/market-analysis",
-  authenticateToken,
-  authorizeRole(["Buyer", "Cooperative"]),
-  body("product").trim().isString().notEmpty(),
-  (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty())
-      return res.status(400).json({ success: false, error: "Invalid input" });
+/* ============================================================
+   METRICS
+============================================================ */
 
-    res.json({
-      success: true,
-      module: "AI Market Insights",
-      data: marketInsights,
-    });
-  }
-);
-
-/* ==================== METRICS ==================== */
-
-app.get("/metrics", (req, res) => {
-  res.type("text/plain");
-  res.send(
-    `# HELP service_uptime_seconds Total uptime in seconds\nservice_uptime_seconds ${process.uptime()}`
-  );
+app.get("/metrics", async (req, res) => {
+  res.set("Content-Type", client.register.contentType);
+  res.end(await client.register.metrics());
 });
 
-/* ==================== 404 HANDLER ==================== */
-
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    error: "Route not found",
-    path: req.originalUrl,
-  });
-});
-
-/* ==================== GLOBAL ERROR HANDLER ==================== */
+/* ============================================================
+   GLOBAL ERROR HANDLER
+============================================================ */
 
 app.use((err, req, res, next) => {
-  console.error("Unhandled Error:", err.message);
-  res.status(500).json({
-    success: false,
-    error: "Internal server error",
-  });
+  logger.error({ message: err.message, endpoint: req.originalUrl });
+  res.status(500).json({ success: false, errorCode: ERR.INTERNAL });
 });
 
-/* ==================== SERVER START ==================== */
+/* ============================================================
+   START + SHUTDOWN
+============================================================ */
 
 const server = app.listen(PORT, () => {
-  console.log(`🚀 Unified Farm AI running on port ${PORT}`);
+  logger.info({ message: "server_started", port: PORT });
 });
-
-/* ==================== PROCESS SAFETY ==================== */
-
-process.on("unhandledRejection", (reason) => {
-  console.error("Unhandled Rejection:", reason);
-});
-
-process.on("uncaughtException", (err) => {
-  console.error("Uncaught Exception:", err);
-  process.exit(1);
-});
-
-/* ==================== GRACEFUL SHUTDOWN ==================== */
 
 process.on("SIGTERM", () => {
-  console.log("SIGTERM received. Shutting down gracefully...");
-  server.close(() => {
-    console.log("Server closed.");
-    process.exit(0);
-  });
+  logger.info({ message: "shutdown_initiated" });
+  isReady = false;
+  server.close(() => process.exit(0));
 });
