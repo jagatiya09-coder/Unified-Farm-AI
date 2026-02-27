@@ -1,26 +1,104 @@
 {
-  "cropOptions": [
-    "Tomatoes",
-    "Cucumbers",
-    "Bell Peppers",
-    "Leafy Greens"
-  ],
+  "cropOptions": {
+    "Medicinal Plants": [
+      {
+        "name": "Aloe Vera",
+        "uses": ["Medicine", "Cosmetics", "Skin Care"],
+        "bestSeasonRegion": "Year-round in South India (Tamil Nadu, Karnataka) due to warm climate",
+        "cultivationTimelineDays": 90,
+        "estimatedSetupCostINR": 150000,
+        "maintenanceCostPerMonthINR": 5000,
+        "maintenanceAdvice": "Requires controlled irrigation and regular pruning."
+      },
+      {
+        "name": "Ashwagandha",
+        "uses": ["Ayurvedic Medicine", "Immunity Booster"],
+        "bestSeasonRegion": "Rabi season (Oct–March) in Madhya Pradesh, Rajasthan",
+        "cultivationTimelineDays": 120,
+        "estimatedSetupCostINR": 180000,
+        "maintenanceCostPerMonthINR": 6000,
+        "maintenanceAdvice": "Maintain soil pH between 7–8; moderate watering."
+      }
+    ],
+    "Cosmetic & Fragrance Crops": [
+      {
+        "name": "Lavender",
+        "uses": ["Perfumes", "Essential Oils", "Aromatherapy"],
+        "bestSeasonRegion": "Spring (Feb–April) in Himachal Pradesh, Uttarakhand",
+        "cultivationTimelineDays": 150,
+        "estimatedSetupCostINR": 200000,
+        "maintenanceCostPerMonthINR": 7000,
+        "maintenanceAdvice": "Requires well-drained soil and controlled humidity."
+      },
+      {
+        "name": "Rose",
+        "uses": ["Perfumes", "Cosmetics", "Medicinal extracts"],
+        "bestSeasonRegion": "Winter (Nov–Feb) in Uttar Pradesh, Punjab",
+        "cultivationTimelineDays": 120,
+        "estimatedSetupCostINR": 220000,
+        "maintenanceCostPerMonthINR": 8000,
+        "maintenanceAdvice": "Regular pruning and pest control essential."
+      }
+    ],
+    "Superfruits & Superfoods": [
+      {
+        "name": "Blueberries",
+        "uses": ["Superfruit", "Nutraceuticals"],
+        "bestSeasonRegion": "Cool climates (Himachal Pradesh, Jammu & Kashmir) during spring",
+        "cultivationTimelineDays": 180,
+        "estimatedSetupCostINR": 250000,
+        "maintenanceCostPerMonthINR": 10000,
+        "maintenanceAdvice": "Requires acidic soil and temperature control."
+      },
+      {
+        "name": "Quinoa",
+        "uses": ["Superfood", "High-protein grain"],
+        "bestSeasonRegion": "Rabi season (Oct–March) in Rajasthan, Gujarat",
+        "cultivationTimelineDays": 120,
+        "estimatedSetupCostINR": 200000,
+        "maintenanceCostPerMonthINR": 7000,
+        "maintenanceAdvice": "Ensure proper drainage and moderate irrigation."
+      }
+    ],
+    "Flowers": [
+      {
+        "name": "Orchids",
+        "uses": ["Luxury flowers", "Export market"],
+        "bestSeasonRegion": "Year-round in controlled greenhouses (Kerala, Tamil Nadu)",
+        "cultivationTimelineDays": 240,
+        "estimatedSetupCostINR": 300000,
+        "maintenanceCostPerMonthINR": 12000,
+        "maintenanceAdvice": "Requires controlled humidity and nutrient misting."
+      },
+      {
+        "name": "Gerbera",
+        "uses": ["Decorative flowers", "Bouquet industry"],
+        "bestSeasonRegion": "Winter and spring (Nov–April) in Maharashtra, Karnataka",
+        "cultivationTimelineDays": 90,
+        "estimatedSetupCostINR": 180000,
+        "maintenanceCostPerMonthINR": 6000,
+        "maintenanceAdvice": "Needs drip irrigation and pest monitoring."
+      }
+    ]
+  },
   "advantages": [
     "Controlled environment reduces risk from weather disasters.",
     "Higher yield per square meter compared to open fields.",
     "Year-round production ensures steady income.",
-    "Premium pricing in urban markets."
+    "Premium pricing in urban and export markets."
   ],
-  "setupRequirements": [
-    "Polyhouse or greenhouse structure with ventilation.",
-    "Drip irrigation system.",
-    "Temperature and humidity monitoring sensors."
-  ],
-  "estimatedProfitMargin": "25-40% higher than open-field crops",
   "riskMitigation": [
     "Diversifies income sources.",
     "Acts as a backup in case of seasonal crop failure.",
     "Can integrate with carbon credit programs for sustainability."
   ],
-  "timestamp": "2026-02-26T20:15:00Z"
+  "schemesEligible": [
+    "National Horticulture Mission",
+    "PM-Kisan Income Support",
+    "Organic Farming Subsidy",
+    "Export Promotion Scheme"
+  ],
+  "modelVersion": "v1.0-mock",
+  "confidenceScore": 0.9,
+  "timestamp": "2026-02-27T15:00:00Z"
 }
