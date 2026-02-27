@@ -103,6 +103,32 @@ app.get("/api/v1/analytics/soil-health", authorizeRole(["Farmer", "GovernmentOff
   });
 });
 
+// ==================== GOVERNMENT VERIFICATION ====================
+// Mock endpoint to verify farmer identity and welfare scheme eligibility
+app.post("/api/v1/government/verify-farmer", authorizeRole(["GovernmentOfficer", "Admin"]), (req, res) => {
+  const { farmerId } = req.body;
+
+  // In real system, this would call State/Central databases
+  res.json({
+    success: true,
+    module: "Government Farmer Verification",
+    data: {
+      farmerId,
+      verified: true,
+      schemesEligible: [
+        "PM-Kisan Income Support",
+        "Crop Insurance Scheme",
+        "Soil Health Card Program",
+        "Organic Farming Subsidy"
+      ],
+      timestamp: new Date().toISOString(),
+      modelVersion: "v1.0-mock",
+      confidenceScore: 0.95
+    }
+  });
+});
+
+
 // ==================== AUTH MOCK ====================
 app.post("/api/v1/auth/login", (req, res) => {
   const { username } = req.body;
