@@ -1,9 +1,5 @@
-const carbonCreditAssessment = {
+{
   "carbonCreditAssessment": {
-
-    /* =====================================================
-       META (Aligned with all other modules)
-    ====================================================== */
     "meta": {
       "farmerId": "FARM001",
       "farmSizeAcres": 10,
@@ -21,15 +17,8 @@ const carbonCreditAssessment = {
       ]
     },
 
-    /* =====================================================
-       EXECUTIVE SUMMARY
-    ====================================================== */
-    "executiveSummary":
-      "Farm demonstrates strong carbon sequestration potential through residue management and reduced tillage, with eligibility for major carbon programs and moderate verification risk.",
+    "executiveSummary": "Farm demonstrates strong carbon sequestration potential through residue management and reduced tillage, with eligibility for major carbon programs and moderate verification risk.",
 
-    /* =====================================================
-       CARBON SEQUESTRATION & BASELINE
-    ====================================================== */
     "carbonSequestration": {
       "baselineEmissionsTonsCO2PerAcre": 1.2,
       "projectedSequestrationTonsCO2PerAcre": 2.5,
@@ -40,9 +29,6 @@ const carbonCreditAssessment = {
       "additionalityJustification": "No-till and residue retention practices newly adopted in 2026."
     },
 
-    /* =====================================================
-       PRACTICE-BASED CARBON SCORING
-    ====================================================== */
     "practiceBasedScoring": {
       "noTillAdoptionScore": 0.78,
       "residueManagementScore": 0.82,
@@ -52,9 +38,6 @@ const carbonCreditAssessment = {
       "compositeCarbonPracticeScore": 0.77
     },
 
-    /* =====================================================
-       PROGRAM ELIGIBILITY
-    ====================================================== */
     "programEligibility": {
       "eligiblePrograms": [
         "Verra Verified Carbon Standard",
@@ -69,9 +52,6 @@ const carbonCreditAssessment = {
       ]
     },
 
-    /* =====================================================
-       FINANCIAL ANALYTICS
-    ====================================================== */
     "financialAnalytics": {
       "creditPriceUSDPerTon": 15,
       "annualCreditRevenueUSD": 375,
@@ -82,9 +62,6 @@ const carbonCreditAssessment = {
       "breakEvenPeriodMonths": 7
     },
 
-    /* =====================================================
-       RISK ASSESSMENT
-    ====================================================== */
     "riskAssessment": {
       "permanenceRiskScore": 0.22,
       "leakageRiskScore": 0.18,
@@ -94,9 +71,6 @@ const carbonCreditAssessment = {
       "riskTierClassification": "Low–Moderate Risk"
     },
 
-    /* =====================================================
-       SCENARIO ANALYSIS
-    ====================================================== */
     "scenarioAnalysis": {
       "priceCrash20Percent": {
         "revisedRevenueUSD": 300,
@@ -116,9 +90,6 @@ const carbonCreditAssessment = {
       }
     },
 
-    /* =====================================================
-       DIGITAL TRACEABILITY & BLOCKCHAIN
-    ====================================================== */
     "digitalTraceability": {
       "blockchainHash": "0x9f8a7c6d5b123abc456def7890fedcba",
       "qrTraceabilityEnabled": true,
@@ -127,80 +98,4 @@ const carbonCreditAssessment = {
         "Residue management log",
         "No-till compliance record",
         "Farmer identity verification"
-      ],
-      "traceabilityScore": 0.81
-    },
-
-    /* =====================================================
-       ESG & SUSTAINABILITY ALIGNMENT
-    ====================================================== */
-    "sustainabilityAlignment": {
-      "sustainabilityScore": 0.82,
-      "soilHealthImpactScore": 0.79,
-      "waterUseImpactScore": 0.68,
-      "biodiversityImpactScore": 0.72,
-      "esgCompositeScore": 0.80
-    },
-
-    /* =====================================================
-       AI INSIGHTS
-    ====================================================== */
-    "aiInsights": {
-      "decisionSummary":
-        "Farm is well-positioned for carbon credit generation with strong practice adoption and moderate verification risk.",
-      "keyDrivers": [
-        "Residue retention",
-        "Reduced tillage",
-        "Soil carbon improvement",
-        "Low leakage risk"
-      ],
-      "linkedCarbonCredits": 25,
-      "linkedRevenueUSD": 375,
-      "confidenceLevelOverall": 0.90
-    },
-
-    /* =====================================================
-       AI EXPLAINABILITY
-    ====================================================== */
-    "aiExplainability": {
-      "featureImportance": {
-        "soilCarbonIncrease": 0.24,
-        "practiceAdoptionLevel": 0.21,
-        "verificationRisk": 0.18,
-        "marketPriceTrend": 0.16,
-        "baselineEmissions": 0.12
-      },
-      "confidenceDrivers": {
-        "soilDataCompleteness": 0.91,
-        "practiceVerificationQuality": 0.88,
-        "marketPredictability": 0.82
-      }
-    },
-
-    /* =====================================================
-       AUDIT TRAIL & OBSERVABILITY
-    ====================================================== */
-    "auditTrail": {
-      "verifiedBy": "Government Carbon Registry Service",
-      "lastChecked": "2026-02-26T20:00:00Z",
-      "verificationStatus": "Certified"
-    },
-
-    "observability": {
-      "processingLatencyMs": 180,
-      "modelDriftIndicator": 0.05,
-      "modelAccuracy": {
-        "precision": 0.90,
-        "recall": 0.87,
-        "f1Score": 0.88
-      },
-      "dataSources": [
-        "Soil Carbon Lab Tests",
-        "Remote Sensing NDVI",
-        "Carbon Market Price Index",
-        "ICAR Soil Health Database"
-      ],
-      "lastCalibrationDate": "2026-02-20"
-    }
-  }
-};
+     
