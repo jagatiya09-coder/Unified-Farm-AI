@@ -1,19 +1,482 @@
-{
-  "recommendations": [
-    "Use certified wheat seeds suitable for loamy soil in Uttar Pradesh.",
-    "Begin land preparation immediately and ensure 2–3 rounds of tilling.",
-    "Maintain soil moisture at 18–22% during germination."
-  ],
-  "riskAnalysis": [
-    "Rainfall forecast shows moderate variability; irrigation planning is essential.",
-    "Soil nutrient levels may require nitrogen supplementation.",
-    "Market prices for wheat are stable but may drop during peak harvest season."
-  ],
-  "fertilizerPlan": {
-    "type": "NPK 40:20:20",
-    "quantity": "120 kg per acre",
-    "schedule": "Apply 50% during sowing, 25% at 21 days, 25% at 45 days"
-  },
-  "successProbability": 0.78,
-  "timestamp": "2026-02-26T16:20:00Z"
-}
+const agricultureAdvisoryResponse = {
+  "agricultureAdvisory": {
+    /* =====================================================
+       META
+    ====================================================== */
+    "meta": {
+      "crop": "Wheat",
+      "region": "Uttar Pradesh",
+      "soilType": "Loamy",
+      "season": "Rabi",
+      "modelVersion": "v7.2-symmetry-perfect",
+      "timestamp": "2026-02-26T16:20:00Z",
+      "requestId": "agri-req-20260226-001",
+      "dataRefreshFrequency": "Weekly (Weather), Monthly (Market), Quarterly (Policy)",
+      "intendedUserProfiles": [
+        "Smallholder farmers",
+        "FPO advisors",
+        "Bank/Insurance credit officers"
+      ]
+    },
+
+    /* =====================================================
+       EXECUTIVE SUMMARY
+    ====================================================== */
+    "executiveSummary": "Wheat in Uttar Pradesh shows stable returns with MSP protection, moderate climate risk, and strong mechanization potential.",
+
+    /* =====================================================
+       FARMER PERSONA LAYER
+    ====================================================== */
+    "farmerPersonaSensitivity": {
+      "smallFarmLessThan2Acres": {
+        "roiAdjustmentPercent": -6,
+        "mechanizationFeasibility": "Low",
+        "riskToleranceLevel": "Low"
+      },
+      "mediumFarm2To5Acres": {
+        "roiAdjustmentPercent": 0,
+        "mechanizationFeasibility": "Moderate",
+        "riskToleranceLevel": "Moderate"
+      },
+      "largeFarmAbove5Acres": {
+        "roiAdjustmentPercent": 4,
+        "mechanizationFeasibility": "High",
+        "riskToleranceLevel": "Moderate-High"
+      }
+    },
+
+    /* =====================================================
+       OPERATIONAL GUIDANCE
+    ====================================================== */
+    "operationalGuidance": {
+      "seedRecommendation": "Certified HD-2967 or equivalent high-yield variety.",
+      "landPreparation": "2–3 rounds tilling; laser leveling recommended.",
+      "soilMoistureTargetPercent": "18–22% during germination",
+      "irrigationSchedule": "CRI stage (20–25 days), tillering, booting, flowering, grain filling.",
+      "fertilizerPlan": {
+        "type": "NPK 40:20:20",
+        "quantityKgPerAcre": 120,
+        "schedule": {
+          "atSowingPercent": 50,
+          "at21DaysPercent": 25,
+          "at45DaysPercent": 25
+        },
+        "micronutrientSupport": "Zinc sulphate 10 kg/acre if deficient."
+      }
+    },
+
+    /* =====================================================
+       TECHNOLOGY INTEGRATION
+    ====================================================== */
+    "technologyIntegration": {
+      "iotDevicesRecommended": [
+        "Soil moisture sensor",
+        "Automatic weather station"
+      ],
+      "automatedIrrigationTrigger": "Moisture < 17%",
+      "satelliteMonitoring": "NDVI-based crop health tracking",
+      "mechanizationLevel": "Moderate",
+      "recommendedMachinery": [
+        "Seed drill",
+        "Laser land leveler",
+        "Combine harvester"
+      ],
+      "solarPumpFeasibilityScore": 0.82,
+      "estimatedEnergySavingsPercent": 24
+    },
+
+    /* =====================================================
+       LABOR REQUIREMENTS
+    ====================================================== */
+    "laborRequirements": {
+      "workersPerAcre": 2,
+      "peakSeasonLaborIncreasePercent": 20,
+      "skillLevelRequired": "Basic farming skills",
+      "harvestMechanizationRecommended": true
+    },
+
+    /* =====================================================
+       PEST & DISEASE FORECASTING
+    ====================================================== */
+    "pestAndDiseaseForecasting": {
+      "highRiskPests": ["Aphids", "Armyworm"],
+      "highRiskDiseases": ["Yellow Rust", "Leaf Blight"],
+      "weatherLinkedAlerts": "High humidity in January increases rust risk.",
+      "riskProbabilityScore": 0.46,
+      "recommendedPreventiveActions": [
+        "Neem oil spray at early tillering",
+        "Rust-resistant variety selection",
+        "Weekly scouting during high humidity",
+        "Fungicide application if rust incidence >5%"
+      ]
+    },
+
+    /* =====================================================
+       WATER BUDGETING
+    ====================================================== */
+    "waterBudgeting": {
+      "totalWaterRequirementLitersPerAcre": 1800000,
+      "irrigationCostINRPerAcre": 3200,
+      "waterScarcityRiskScore": 0.41,
+      "recommendedEfficiencyImprovement": "Laser leveling + moisture sensors reduce usage ~12%"
+    },
+
+    /* =====================================================
+       SOIL HEALTH DIAGNOSTICS
+    ====================================================== */
+    "soilHealthDiagnostics": {
+      "recommendedSoilTests": ["NPK", "Organic Carbon", "Micronutrients"],
+      "currentPHAssumption": 6.8,
+      "phCorrectionGuidance": "Apply lime if pH < 6.0; gypsum if salinity observed.",
+      "socTrendProjection3YearsPercent": [0, 3, 6],
+      "soilOrganicCarbonImprovementPotentialPercent": 6
+    },
+
+    /* =====================================================
+       YIELD SENSITIVITY MATRIX
+    ====================================================== */
+    "yieldSensitivity": {
+      "lateSowingImpactPercent": -10,
+      "nitrogenDeficiencyImpactPercent": -14,
+      "heatStressImpactPercent": -18,
+      "combinedStressWorstCasePercent": -28
+    },
+
+    /* =====================================================
+       CLIMATE RESILIENCE (SYMMETRIC WITH GREENHOUSE)
+    ====================================================== */
+    "climateResilience": {
+      "optimalTemperatureRangeCelsius": "10–25",
+      "heatStressThresholdCelsius": 35,
+      "rainfallSensitivity": "Moderate",
+      "climateResilienceScore": 0.74,
+      "derivedFrom": [
+        "Water scarcity risk",
+        "Rainfall variability impact",
+        "Crop rotation nitrogen buffering",
+        "Heat stress sensitivity"
+      ]
+    },
+
+    /* =====================================================
+       FINANCIAL OVERVIEW
+    ====================================================== */
+    "financialOverview": {
+      "estimatedYieldQuintalPerAcre": 20,
+      "averageMarketPriceINRPerQuintal": 2200,
+      "grossRevenueINRPerAcre": 44000,
+      "estimatedCostINRPerAcre": 28000,
+      "netProfitINRPerAcre": 16000,
+      "baseROIpercent": 36
+    },
+
+    "riskAdjustedProjectionByFarmSize": {
+      "smallFarmROIpercent": 30,
+      "mediumFarmROIpercent": 36,
+      "largeFarmROIpercent": 40
+    },
+
+    /* =====================================================
+       MARKET INTELLIGENCE & STRATEGY
+    ====================================================== */
+    "marketIntelligence": {
+      "threeYearPriceTrendINRPerQuintal": [2050, 2150, 2200],
+      "mspVsMarketPriceGapPercent": 12,
+      "priceStabilityIndex": 0.72,
+      "competitionTrendScore": 0.66,
+      "demandElasticityScore": 0.68,
+      "seasonalVolatilityCurvePeakMonth": "April"
+    },
+
+    "marketStrategy": {
+      "bestSaleWindow": "Late March to early April",
+      "mspVsMandiComparison": {
+        "mspINRPerQuintal": 2200,
+        "averageMandiPriceINRPerQuintal": 2150
+      },
+      "storageVsImmediateSaleRecommendation": "Store 30–45 days if mandi price < MSP.",
+      "contractFarmingFeasibilityScore": 0.62,
+      "priceHedgingOptions": [
+        "Forward contract with millers",
+        "Warehouse receipt financing"
+      ]
+    },
+
+    /* =====================================================
+       CARBON & CLIMATE INCENTIVES
+    ====================================================== */
+    "carbonAndClimateIncentiveLayer": {
+      "carbonCreditEligibility": false,
+      "eligibilityReason": "Conventional wheat practices have limited measurable carbon sequestration.",
+      "whatWouldEnableEligibility": [
+        "No-till farming",
+        "Biochar integration",
+        "Verified carbon baseline measurement"
+      ],
+      "potentialCarbonSavingsFromResidueManagementKgCO2PerAcre": 120
+    },
+
+    /* =====================================================
+       INSURANCE & CREDIT
+    ====================================================== */
+    "insuranceOptimization": {
+      "recommendedScheme": "PMFBY",
+      "sumInsuredINRPerAcre": 35000,
+      "expectedClaimProbability": 0.18,
+      "premiumToBenefitRatioScore": 0.72,
+      "weatherIndexSuitabilityScore": 0.64,
+      "insuranceTypeRecommendation": "Yield-based preferred; weather-index suitable in rainfall-volatile zones"
+    },
+
+    "insuranceAndRiskLinkage": {
+      "expectedPayoutProbability": 0.18,
+      "climateTriggerEventsCovered": [
+        "Drought",
+        "Excess Rainfall",
+        "Hailstorm"
+      ]
+    },
+
+    "creditAndFinancing": {
+      "seasonalWorkingCapitalINR": 18000,
+      "kccLoanEligibility": true,
+      "recommendedCreditInstrument": "Kisan Credit Card (KCC)",
+      "interestRateAssumptionPercent": 7,
+      "interestRateSensitivityImpactPercent": -3,
+      "loanFeasibilityScore": 0.83
+    },
+
+    /* =====================================================
+       TRACEABILITY & COMPLIANCE
+    ====================================================== */
+    "traceabilityAndCompliance": {
+      "traceabilityReadinessScore": 0.71,
+      "qrBatchTraceabilityRecommended": true,
+      "requiredDocumentation": [
+        "Pesticide logbook",
+        "Batch harvest record",
+        "Moisture test report"
+      ],
+      "pesticideResidueComplianceRiskScore": 0.22
+    },
+
+    /* =====================================================
+       ROTATION & BENCHMARKING
+    ====================================================== */
+    "cropRotation": {
+      "recommendedPreCrop": "Pulses (Chickpea)",
+      "recommendedPostCrop": "Moong",
+      "rotationYieldImprovementPercent": 7,
+      "soilNitrogenRestorationBenefitPercent": 10
+    },
+
+    "regionalBenchmarking": {
+      "districtAverageYieldQuintalPerAcre": 18,
+      "topFarmerYieldQuintalPerAcre": 24,
+      "currentProjectedYield": 20,
+      "yieldGapPercent": 11,
+      "costPercentile": "55th",
+      "yieldPercentile": "62nd"
+    },
+
+    /* =====================================================
+       EARLY WARNING SYSTEM
+    ====================================================== */
+    "earlyWarningSystem": {
+      "imdFrostAlertAction": "Light irrigation + mulching",
+      "rainfallDeviationAlert": "Advance irrigation scheduling",
+      "heatwaveAlert": "CRI-stage irrigation protection",
+      "policyAlert": "Monitor MSP announcements in February",
+      "marketCrashAlertTrigger": "Mandi price falls >10% below MSP"
+    },
+
+    /* =====================================================
+       POST-HARVEST ECONOMICS
+    ====================================================== */
+    "postHarvestEconomics": {
+      "storageCostINRPerQuintalPerMonth": 12,
+      "transportCostINRPerKmPerQuintal": 2.5,
+      "averageDistanceToMarketKm": 18,
+      "postHarvestLossPercent": 3,
+      "coldStorageNeedLevel": "Low",
+      "marketAccessType": "MSP + Open Mandi",
+      "warehouseReceiptFinancingAvailable": true,
+      "optimalStorageDurationDays": 30
+    },
+
+    /* =====================================================
+       SUSTAINABILITY METRICS
+    ====================================================== */
+    "sustainabilityMetrics": {
+      "waterUsageLitersPerKg": 1400,
+      "soilOrganicCarbonImprovementPotentialPercent": 6,
+      "cropResidueManagementOptions": [
+        "Biochar",
+        "Composting",
+        "Straw incorporation"
+      ],
+      "waterSavingTechniques": [
+        "Laser leveling",
+        "Micro-irrigation"
+      ],
+      "esgCompositeScore": 0.79,
+      "residueBurningAvoidanceBenefitPercent": 11,
+      "climateResilienceScore": 0.74
+    },
+
+    /* =====================================================
+       COMMUNITY & COOPERATIVE LAYER
+    ====================================================== */
+    "communityAndCooperativeLayer": {
+      "fpoParticipationRecommended": true,
+      "sharedMachinerySavingsPercent": 12,
+      "collectiveBargainingBenefitPercent": 8,
+      "peerLearningNetworks": [
+        "District Wheat Growers WhatsApp Group"
+      ],
+      "bulkInputProcurementSavingsPercent": 9,
+      "communityPestAlertSystemAvailable": true
+    },
+
+    /* =====================================================
+       FARMER ENABLEMENT
+    ====================================================== */
+    "farmerEnablement": {
+      "trainingResources": [
+        "KVK Wheat Module",
+        "ICAR Wheat Handbook"
+      ],
+      "governmentSchemes": [
+        "PM-Kisan",
+        "PMFBY",
+        "Soil Health Card"
+      ],
+      "digitalPlatforms": [
+        "e-NAM",
+        "AgriStack"
+      ],
+      "helpline": "Kisan Call Center 1800-180-1551",
+      "recommendedAnnualTrainingHours": 12,
+      "schemeEligibilityScore": 0.86
+    },
+
+    /* =====================================================
+       EXPORT READINESS
+    ====================================================== */
+    "exportReadiness": {
+      "exportFeasibilityScore": 0.58,
+      "targetMarkets": [
+        "Middle East",
+        "Africa"
+      ],
+      "requiredCertifications": [
+        "FSSAI License",
+        "Phytosanitary Certificate"
+      ],
+      "mspVsExportTradeoffInsight": "Export viable when global price exceeds MSP by 15%+.",
+      "logisticsComplexityScore": 0.62,
+      "averageRejectionRatePercent": 5,
+      "residueComplianceRiskScore": 0.24
+    },
+
+    /* =====================================================
+       PROFIT OPTIMIZATION TIPS
+    ====================================================== */
+    "profitOptimizationTips": {
+      "fpoBulkPurchaseSavingsPercent": 8,
+      "laserLevelingWaterSavingsPercent": 12,
+      "timelyCRIYieldBoostPercent": 5,
+      "micronutrientCorrectionYieldBoostPercent": 4
+    },
+
+    /* =====================================================
+       SCENARIO ANALYSIS & PROBABILISTIC PROJECTION
+    ====================================================== */
+    "scenarioAnalysis": {
+      "droughtScenario": { "revisedROIpercent": 25, "probabilityWeight": 0.22 },
+      "fertilizerPriceSpikeScenario": { "revisedROIpercent": 29, "probabilityWeight": 0.18 },
+      "laborShortageScenario": { "revisedROIpercent": 31, "probabilityWeight": 0.16 },
+      "pestOutbreakScenario": { "revisedROIpercent": 27, "probabilityWeight": 0.12 },
+      "mspWithdrawalScenario": { "revisedROIpercent": 18, "probabilityWeight": 0.05 }
+    },
+
+    "probabilisticProjection": {
+      "roiConfidenceIntervalPercent": {
+        "lowerBound": 22,
+        "expected": 36,
+        "upperBound": 46
+      },
+      "riskAdjustedROIpercent": 31,
+      "successProbability": 0.78
+    },
+
+    /* =====================================================
+       AI EXPLAINABILITY
+    ====================================================== */
+    "aiExplainability": {
+      "featureImportance": {
+        "rainfallForecast": 0.21,
+        "soilNitrogenLevel": 0.18,
+        "marketPriceTrend": 0.17,
+        "temperatureProjection": 0.14,
+        "policyStability": 0.12,
+        "inputCostVolatility": 0.10
+      },
+      "riskDriverConfidenceIntervals": {
+        "rainfallImpactPercent": [-20, -15, -10],
+        "marketPriceImpactPercent": [-12, -8, -4],
+        "fertilizerCostImpactPercent": [-9, -6, -3]
+      },
+      "confidenceByDriver": {
+        "climateModelConfidence": 0.89,
+        "marketModelConfidence": 0.91,
+        "policyStabilityConfidence": 0.84
+      }
+    },
+
+    /* =====================================================
+       AI INSIGHTS (AFTER SCENARIOS, SYMMETRIC WITH GREENHOUSE)
+    ====================================================== */
+    "aiInsights": {
+      "decisionSummary": "Wheat remains a stable and policy-supported crop in Uttar Pradesh with moderate climate risk and strong MSP downside protection.",
+      "keyRiskDrivers": [
+        "Rainfall fluctuation",
+        "Input cost volatility",
+        "Policy dependence"
+      ],
+      "upsideDrivers": [
+        "MSP floor protection",
+        "Efficient irrigation",
+        "Crop rotation nitrogen gain"
+      ],
+      "confidenceLevelOverall": 0.91,
+      "strategicRecommendation": "Proceed with wheat cultivation under moderate mechanization and MSP-linked sales strategy.",
+      "riskTierClassification": "Medium-Low Risk | Stable Return Profile",
+      "linkedBaseROIpercent": 36,
+      "linkedRiskAdjustedROIpercent": 31,
+      "roiConfidenceIntervalPercent": {
+        "lowerBound": 22,
+        "expected": 36,
+        "upperBound": 46
+      }
+    },
+
+    /* =====================================================
+       OBSERVABILITY
+    ====================================================== */
+    "observability": {
+      "processingLatencyMs": 220,
+      "modelDriftIndicator": 0.06,
+      "precision": 0.91,
+      "recall": 0.88,
+      "f1Score": 0.89,
+      "dataSources": [
+        "IMD Weather",
+        "Agmarknet",
+        "ICAR Wheat Research",
+        "State Agriculture Department Reports"
+      ],
+      "lastCalibrationDate": "2026-02-20"
+    }
+  }
+};
