@@ -1,43 +1,282 @@
-{
-  "farmerName": "Demo Farmer",
-  "farmerId": "FARM001",
-  "farmSize": "10 acres",
-  "financialHealth": "Moderate",
-  "viabilityScore": 78,
-  "successProbability": 0.72,
-  "confidenceInterval": "±0.05",
-  "strengths": [
-    "Access to irrigation canals",
-    "Use of certified seeds",
-    "Stable local market demand"
-  ],
-  "risks": [
-    { "factor": "Dependence on rainfall variability", "severity": "High" },
-    { "factor": "Limited access to crop insurance", "severity": "Medium" },
-    { "factor": "Potential fertilizer cost increase", "severity": "Low" }
-  ],
-  "recommendations": [
-    "Diversify crops with pulses to reduce risk.",
-    "Enroll in government crop insurance schemes.",
-    "Explore collective selling through farmer cooperatives."
-  ],
-  "resourceRequirements": {
-    "funding": "₹2,00,000",
-    "labor": "5 workers",
-    "equipment": ["Tractor", "Drip Irrigation Kit"]
-  },
-  "schemesEligible": [
-    "PM-Kisan Income Support",
-    "Crop Insurance Scheme",
-    "Soil Health Card Program",
-    "Organic Farming Subsidy"
-  ],
-  "auditTrail": {
-    "verifiedBy": "Government Farmer Verification Service",
-    "lastChecked": "2026-02-26T20:05:00Z",
-    "verificationStatus": "Verified"
-  },
-  "modelVersion": "v1.0-mock",
-  "confidenceScore": 0.85,
-  "timestamp": "2026-02-26T20:10:00Z"
-}
+const businessAssessment = {
+  "businessAssessment": {
+
+    /* =====================================================
+       META
+    ====================================================== */
+    "meta": {
+      "farmerName": "Demo Farmer",
+      "farmerId": "FARM001",
+      "farmSizeAcres": 10,
+      "region": "Uttar Pradesh",
+      "assessmentType": "Agri-Business Viability",
+      "modelVersion": "v3.0-enterprise-unified",
+      "timestamp": "2026-02-26T20:10:00Z",
+      "dataRefreshFrequency": "Quarterly (Financial), Monthly (Market), Seasonal (Climate)",
+      "intendedUsers": [
+        "Farmer",
+        "Bank Credit Officer",
+        "Insurance Underwriter",
+        "FPO Advisor"
+      ]
+    },
+
+    /* =====================================================
+       EXECUTIVE SUMMARY
+    ====================================================== */
+    "executiveSummary":
+      "Farm demonstrates moderate financial stability with strong irrigation access, scalable mechanization potential, and viable creditworthiness under structured lending.",
+
+    /* =====================================================
+       CORE BUSINESS METRICS
+    ====================================================== */
+    "coreMetrics": {
+      "financialHealth": "Moderate",
+      "viabilityScore": 78,
+      "successProbability": 0.72,
+      "confidenceIntervalPercent": {
+        "lowerBound": 0.67,
+        "expected": 0.72,
+        "upperBound": 0.77
+      },
+      "confidenceScore": 0.85
+    },
+
+    /* =====================================================
+       FINANCIAL ANALYTICS
+    ====================================================== */
+    "financialAnalytics": {
+      "annualEstimatedRevenueINR": 880000,
+      "annualEstimatedCostINR": 560000,
+      "netIncomeINR": 320000,
+      "debtToIncomeRatio": 0.34,
+      "workingCapitalRequirementINR": 200000,
+      "creditRiskScore": 0.29,
+      "interestSensitivityImpactPercent": -4
+    },
+
+    /* =====================================================
+       MARKET INTELLIGENCE (NEW)
+    ====================================================== */
+    "marketIntelligence": {
+      "priceStabilityIndex": 0.71,
+      "competitionDensityScore": 0.63,
+      "demandElasticityScore": 0.66,
+      "threeYearPriceTrendINR": [2050, 2150, 2200],
+      "marketAccessType": "MSP + Open Mandi",
+      "volatilityRiskPercent": 9
+    },
+
+    /* =====================================================
+       CLIMATE EXPOSURE (NEW)
+    ====================================================== */
+    "climateExposure": {
+      "climateRiskScore": 0.44,
+      "droughtSensitivityPercent": -12,
+      "rainfallDeviationImpactPercent": -9,
+      "heatwaveExposureScore": 0.38,
+      "irrigationBufferingCapacity": "High"
+    },
+
+    /* =====================================================
+       STRENGTHS & RISK ANALYSIS
+    ====================================================== */
+    "strengths": [
+      "Access to irrigation canals",
+      "Use of certified seeds",
+      "Stable local market demand"
+    ],
+
+    "riskAnalysis": {
+      "identifiedRisks": [
+        { "factor": "Dependence on rainfall variability", "severity": "High", "impactScore": 0.22 },
+        { "factor": "Limited access to crop insurance", "severity": "Medium", "impactScore": 0.14 },
+        { "factor": "Potential fertilizer cost increase", "severity": "Low", "impactScore": 0.08 }
+      ],
+      "compositeRiskScore": 0.31,
+      "riskTierClassification": "Medium Risk"
+    },
+
+    /* =====================================================
+       INSURANCE OPTIMIZATION
+    ====================================================== */
+    "insuranceOptimization": {
+      "recommendedScheme": "PMFBY",
+      "expectedClaimProbability": 0.18,
+      "sumInsuredINR": 350000,
+      "premiumToBenefitRatioScore": 0.74,
+      "weatherIndexSuitabilityScore": 0.66
+    },
+
+    /* =====================================================
+       CREDIT & FINANCING
+    ====================================================== */
+    "creditAndFinancing": {
+      "kccEligibility": true,
+      "recommendedLoanType": "Kisan Credit Card (KCC)",
+      "seasonalCreditRequirementINR": 200000,
+      "loanFeasibilityScore": 0.83,
+      "repaymentCapacityScore": 0.79
+    },
+
+    /* =====================================================
+       RESOURCE REQUIREMENTS
+    ====================================================== */
+    "resourceRequirements": {
+      "fundingINR": 200000,
+      "laborWorkersRequired": 5,
+      "equipment": ["Tractor", "Drip Irrigation Kit"],
+      "mechanizationLevel": "Moderate",
+      "solarPumpFeasibilityScore": 0.81
+    },
+
+    /* =====================================================
+       POST-HARVEST & SUPPLY CHAIN (NEW)
+    ====================================================== */
+    "postHarvestAndSupplyChain": {
+      "storageReadinessScore": 0.68,
+      "transportDependencyScore": 0.52,
+      "averageDistanceToMarketKm": 18,
+      "postHarvestLossPercent": 3,
+      "logisticsComplexityScore": 0.61,
+      "warehouseReceiptFinancingAvailable": true
+    },
+
+    /* =====================================================
+       DIGITAL READINESS & TRACEABILITY (NEW)
+    ====================================================== */
+    "digitalReadiness": {
+      "digitalAdoptionScore": 0.72,
+      "qrTraceabilityReadiness": true,
+      "requiredComplianceDocs": [
+        "Pesticide logbook",
+        "Batch harvest record",
+        "Moisture test report"
+      ],
+      "dataRecordKeepingQualityScore": 0.77
+    },
+
+    /* =====================================================
+       COMMUNITY & SCALING
+    ====================================================== */
+    "communityAndScaling": {
+      "fpoMembershipRecommended": true,
+      "sharedMachinerySavingsPercent": 12,
+      "collectiveSellingBenefitPercent": 9,
+      "scalabilityScore": 0.76
+    },
+
+    /* =====================================================
+       ESG & SUSTAINABILITY
+    ====================================================== */
+    "sustainabilityProfile": {
+      "waterUseEfficiencyScore": 0.73,
+      "soilOrganicCarbonTrendPositive": true,
+      "carbonCreditEligibilityPotential": "Conditional (requires no-till adoption)",
+      "esgCompositeScore": 0.78
+    },
+
+    /* =====================================================
+       GOVERNMENT SCHEMES
+    ====================================================== */
+    "governmentSchemes": {
+      "eligibleSchemes": [
+        "PM-Kisan Income Support",
+        "Crop Insurance Scheme",
+        "Soil Health Card Program",
+        "Organic Farming Subsidy"
+      ],
+      "schemeUtilizationScore": 0.69
+    },
+
+    /* =====================================================
+       SCENARIO ANALYSIS (NEW)
+    ====================================================== */
+    "scenarioAnalysis": {
+      "priceCrash10Percent": { "revisedViabilityScore": 72, "probabilityWeight": 0.25 },
+      "inputCostSpike15Percent": { "revisedViabilityScore": 70, "probabilityWeight": 0.18 },
+      "climateShockScenario": { "revisedViabilityScore": 68, "probabilityWeight": 0.15 },
+      "laborShortageScenario": { "revisedViabilityScore": 73, "probabilityWeight": 0.12 }
+    },
+
+    /* =====================================================
+       STRATEGIC RECOMMENDATIONS
+    ====================================================== */
+    "strategicRecommendations": {
+      "riskReduction": [
+        "Diversify crops with pulses to reduce rainfall dependency.",
+        "Enroll in crop insurance under PMFBY."
+      ],
+      "profitEnhancement": [
+        "Adopt collective selling through FPO.",
+        "Improve nitrogen management to boost yield."
+      ],
+      "financialOptimization": [
+        "Leverage KCC for seasonal liquidity.",
+        "Explore warehouse receipt financing."
+      ]
+    },
+
+    /* =====================================================
+       AI INSIGHTS (NEW)
+    ====================================================== */
+    "aiInsights": {
+      "decisionSummary":
+        "Farm is financially viable with moderate risk exposure and strong creditworthiness under structured lending.",
+      "keyDrivers": [
+        "Revenue stability",
+        "Cost control efficiency",
+        "Climate exposure",
+        "Market access strength"
+      ],
+      "linkedViabilityScore": 78,
+      "linkedSuccessProbability": 0.72,
+      "riskTierClassification": "Medium Risk | Stable Growth Potential",
+      "confidenceLevelOverall": 0.89
+    },
+
+    /* =====================================================
+       AI EXPLAINABILITY
+    ====================================================== */
+    "aiExplainability": {
+      "featureImportance": {
+        "revenueStability": 0.22,
+        "costControlEfficiency": 0.18,
+        "climateExposure": 0.17,
+        "marketAccessStrength": 0.15,
+        "insuranceCoverage": 0.11
+      },
+      "confidenceDrivers": {
+        "financialDataCompleteness": 0.92,
+        "marketPredictability": 0.87,
+        "climateModelConfidence": 0.84
+      }
+    },
+
+    /* =====================================================
+       AUDIT TRAIL & OBSERVABILITY
+    ====================================================== */
+    "auditTrail": {
+      "verifiedBy": "Government Farmer Verification Service",
+      "lastChecked": "2026-02-26T20:05:00Z",
+      "verificationStatus": "Verified"
+    },
+
+    "observability": {
+      "processingLatencyMs": 190,
+      "modelDriftIndicator": 0.04,
+      "modelAccuracy": {
+        "precision": 0.89,
+        "recall": 0.86,
+        "f1Score": 0.87
+      },
+      "dataSources": [
+        "Agmarknet Market Data",
+        "IMD Weather Data",
+        "State Agriculture Financial Reports",
+        "Bank Credit Scoring Model"
+      ],
+      "lastCalibrationDate": "2026-02-20"
+    }
+  }
+};
