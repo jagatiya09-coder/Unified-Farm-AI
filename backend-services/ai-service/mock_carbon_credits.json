@@ -98,4 +98,67 @@
         "Residue management log",
         "No-till compliance record",
         "Farmer identity verification"
-     
+      ],
+      "traceabilityScore": 0.81
+    },
+
+    "sustainabilityAlignment": {
+      "sustainabilityScore": 0.82,
+      "soilHealthImpactScore": 0.79,
+      "waterUseImpactScore": 0.68,
+      "biodiversityImpactScore": 0.72,
+      "esgCompositeScore": 0.80
+    },
+
+    "aiInsights": {
+      "decisionSummary": "Farm is well-positioned for carbon credit generation with strong practice adoption and moderate verification risk.",
+      "keyDrivers": [
+        "Residue retention",
+        "Reduced tillage",
+        "Soil carbon improvement",
+        "Low leakage risk"
+      ],
+      "linkedCarbonCredits": 25,
+      "linkedRevenueUSD": 375,
+      "confidenceLevelOverall": 0.90
+    },
+
+    "aiExplainability": {
+      "featureImportance": {
+        "soilCarbonIncrease": 0.24,
+        "practiceAdoptionLevel": 0.21,
+        "verificationRisk": 0.18,
+        "marketPriceTrend": 0.16,
+        "baselineEmissions": 0.12
+      },
+      "confidenceDrivers": {
+        "soilDataCompleteness": 0.91,
+        "practiceVerificationQuality": 0.88,
+        "marketPredictability": 0.82
+      }
+    },
+
+    "auditTrail": {
+      "verifiedBy": "Government Carbon Registry Service",
+      "lastChecked": "2026-02-26T20:00:00Z",
+      "verificationStatus": "Certified"
+    },
+
+    "observability": {
+      "processingLatencyMs": 180,
+      "modelDriftIndicator": 0.05,
+      "modelAccuracy": {
+        "precision": 0.90,
+        "recall": 0.87,
+        "f1Score": 0.88
+      },
+      "dataSources": [
+        "Soil Carbon Lab Tests",
+        "Remote Sensing NDVI",
+        "Carbon Market Price Index",
+        "ICAR Soil Health Database"
+      ],
+      "lastCalibrationDate": "2026-02-20"
+    }
+  }
+}
